@@ -43,13 +43,8 @@ public class CombineItems extends Task {
         super(bot);
     }
 
-
-    // TODO: figure out a solution to...
-    // (inventory.containsAll(itemA_id, itemB_id) && inventory.onlyContains(itemA_id, itemB_id))
-    // onlyContains needed because some action cycles (such as stringing bows) have my_player's animation flip to IDLE for a tick
-    // so checks if my_player is animating will rerun this task while in the process of stringing bows.
     @Override
-    boolean shouldRun() {
+    public boolean shouldRun() {
         return inventory.containsAll(itemA_id, itemB_id) && (inventory.onlyContains(itemA_id, itemB_id) || dialogues.isPendingContinuation());
     }
 
@@ -72,7 +67,8 @@ public class CombineItems extends Task {
         Item item1 = inventory.getItemInSlot(slotPair[0]);
         Item item2 = inventory.getItemInSlot(slotPair[1]);
 
-        boolean canUseSlotPair = (item1.getId() == itemA_id || item1.getId() == itemB_id) && (item2.getId() == itemA_id || item2.getId() == itemB_id);
+        boolean canUseSlotPair = item1 != null && item2 != null &&
+                (item1.getId() == itemA_id || item1.getId() == itemB_id) && (item2.getId() == itemA_id || item2.getId() == itemB_id);
         if(canUseSlotPair && inventory.interact(slotPair[0], USE)){
             sleep(randomGaussian(300,100));
             return inventory.isItemSelected() && inventory.interact(slotPair[1], USE);
@@ -87,7 +83,7 @@ public class CombineItems extends Task {
 
     private boolean spacebarMakeWidget() throws InterruptedException {
         boolean foundWidget = ConditionalSleep2.sleep(1500, () -> {
-            // If I did not cover an interaction action, put it here.
+            // Actions may not be inclusive of every "Create" style verb. So put more here as needed.
             List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, "Make", "String"));
             return !widgets.isEmpty() && widgets.get(0) != null;
         });

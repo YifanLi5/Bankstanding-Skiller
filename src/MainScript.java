@@ -1,3 +1,4 @@
+import Paint.ScriptPaint;
 import Task.*;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.script.Script;
@@ -10,15 +11,21 @@ import static Util.ScriptConstants.itemB_id;
 import static Util.ScriptConstants.combinationType;
 import static Util.ScriptConstants.CombinationType;
 
-@ScriptManifest(author = "yfoo", name = "(dev7) BankStanding Skiller", info = "Does 14-14 or 1-27 bankstanding tasks", version = 0.1, logo = "")
+@ScriptManifest(author = "yfoo", name = "(dev11) BankStanding Skiller", info = "Does 14-14 or 1-27 bankstanding tasks", version = 0.1, logo = "")
 public class MainScript extends Script {
 
     @Override
     public void onStart() {
         //handleRecipeConfiguration();
-        itemA_id = 946;
-        itemB_id = 1517;
-        combinationType = CombinationType._1_27;
+//        itemA_id = 946; //knife
+//        itemB_id = 1517; //maple logs
+        //combinationType = CombinationType._1_27;
+        itemA_id = 62; //maple longbow u
+        itemB_id = 1777; // bowstring
+        combinationType = CombinationType._14_14;
+
+
+        new ScriptPaint(this);
 
         new CombineItems(bot);
         new BankRestock(bot);

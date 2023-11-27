@@ -20,7 +20,7 @@ public class Idle extends Task {
     }
 
     @Override
-    boolean shouldRun() {
+    public boolean shouldRun() {
         return myPlayer().isAnimating();
     }
 

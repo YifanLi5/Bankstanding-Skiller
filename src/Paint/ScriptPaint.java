@@ -17,11 +17,9 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     private static String status;
     private final Script script;
     private final long startTime;
-    private final ExperienceTracker tracker;
-    private final int startingWCLvl;
     private final String[][] xpTrackTemplate = {
-            {"", "+XP (XP/H)", "LVL (+)"},
-            {"Woodcutting", "[1][1]", "[1][2]"},
+            {"", "Quantity"},
+            {"Items Processed", "[1][1]"},
             {"[2][0]"},
             {"[3][0]"}
     };
@@ -45,11 +43,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         script.getBot().addPainter(this);
         script.getBot().addMouseListener(this);
 
-        startingWCLvl = script.skills.getStatic(Skill.WOODCUTTING);
-
         startTime = System.currentTimeMillis();
-        tracker = script.getExperienceTracker();
-        tracker.start(Skill.WOODCUTTING);
     }
 
     public static void setStatus(String status) {
@@ -70,9 +64,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     }
 
     private void populatePlaceholderArray() {
-        xpTrackTemplate[1][1] = String.format("+%s (%s)", formatNumber(tracker.getGainedXP(Skill.WOODCUTTING)), formatNumber(tracker.getGainedXPPerHour(Skill.WOODCUTTING)));
-        xpTrackTemplate[1][2] = String.format("%s (+%s)", startingWCLvl, tracker.getGainedLevels(Skill.WOODCUTTING));
-
+        xpTrackTemplate[1][1] = "TODO";
         xpTrackTemplate[2][0] = String.format("Status: %s", status);
         xpTrackTemplate[3][0] = formatTime(System.currentTimeMillis() - startTime);
     }

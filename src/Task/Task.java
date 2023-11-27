@@ -6,14 +6,13 @@ import org.osbot.rs07.script.MethodProvider;
 import java.util.ArrayList;
 
 public abstract class Task extends MethodProvider {
-    static final int IDLE_ANIM_ID = -1;
     static ArrayList<Task> subclassInstances = new ArrayList<>();
 
     public Task(Bot bot) {
         exchangeContext(bot);
         subclassInstances.add(this);
 
-        log("Initialized task class: " + this.getClass().getCanonicalName());
+        log("Initialized task instance of type: " + this.getClass().getCanonicalName());
     }
 
     public static Task pollNextTask() {
@@ -43,11 +42,11 @@ public abstract class Task extends MethodProvider {
         return runnableTasks.get(idx);
     }
 
-    abstract boolean shouldRun();
+    public abstract boolean shouldRun();
 
     public abstract void runTask() throws InterruptedException;
 
-    int probabilityWeight() {
+    public int probabilityWeight() {
         return 1;
     }
 }
