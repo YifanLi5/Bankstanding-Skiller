@@ -11,20 +11,12 @@ import static Util.ScriptConstants.itemB_id;
 import static Util.ScriptConstants.combinationType;
 import static Util.ScriptConstants.CombinationType;
 
-@ScriptManifest(author = "yfoo", name = "(dev11) BankStanding Skiller", info = "Does 14-14 or 1-27 bankstanding tasks", version = 0.1, logo = "")
+@ScriptManifest(author = "yfoo", name = "Item Combiner 2", info = "Does 14-14 or 1-27 bankstanding tasks", version = 0.1, logo = "https://imgur.com/a/7rxlGZw")
 public class MainScript extends Script {
 
     @Override
     public void onStart() {
-        //handleRecipeConfiguration();
-//        itemA_id = 946; //knife
-//        itemB_id = 1517; //maple logs
-        //combinationType = CombinationType._1_27;
-        itemA_id = 62; //maple longbow u
-        itemB_id = 1777; // bowstring
-        combinationType = CombinationType._14_14;
-
-
+        handleRecipeConfiguration();
         new ScriptPaint(this);
 
         new CombineItems(bot);
@@ -64,7 +56,11 @@ public class MainScript extends Script {
         long itemCount0 = inventory.getAmount(uniqueItemsIds[0]);
         long itemCount1 = inventory.getAmount(uniqueItemsIds[1]);
 
-        combinationType = (itemCount0 - itemCount1 == 0) ? CombinationType._14_14 : CombinationType._1_27;
+
+
+
+
+        combinationType = (Math.abs(itemCount0 - itemCount1) == 26) ? CombinationType._1_27 : CombinationType._14_14;
         itemA_id = (itemCount0 <= itemCount1) ? uniqueItemsIds[0] : uniqueItemsIds[1];
         itemB_id = (itemCount0 <= itemCount1) ? uniqueItemsIds[1] : uniqueItemsIds[0];
 

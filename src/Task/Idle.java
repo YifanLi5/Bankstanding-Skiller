@@ -7,7 +7,7 @@ import org.osbot.rs07.utility.ConditionalSleep;
 import static Util.ScriptConstants.*;
 
 public class Idle extends Task {
-    private final ConditionalSleep sleepUntilIdle = new ConditionalSleep(60000, 1000, 500) {
+    private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000, 500) {
 
         @Override
         public boolean condition() {
@@ -29,7 +29,7 @@ public class Idle extends Task {
         log("Running: " + this.getClass().getSimpleName());
         ScriptPaint.setStatus("Combining Items... (Idle)");
         mouse.moveOutsideScreen();
-        sleepUntilIdle.sleep();
+        sleepUntilInventoryProcessed.sleep();
         if (myPlayer().getAnimation() == -1 && !mouse.isOnScreen()) {
             ScriptPaint.setStatus("Simulating AFK");
             long idleTime = randomSessionGaussian();

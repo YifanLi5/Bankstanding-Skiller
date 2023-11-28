@@ -1,5 +1,6 @@
 package Task;
 
+import Paint.ScriptPaint;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.RS2Widget;
@@ -23,13 +24,7 @@ public class CombineItems extends Task {
         public boolean condition() {
             try {
                 if(combineComponents()) {
-                    if(spacebarMakeWidget()) {
-                        boolean result = ConditionalSleep2.sleep(1500, () -> myPlayer().isAnimating());
-                        if(keyboard.isKeyDown(VK_SPACE)) {
-                            keyboard.releaseKey(VK_SPACE);
-                        }
-                        return !result;
-                    }
+                    return !spacebarMakeWidget();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -67,12 +62,14 @@ public class CombineItems extends Task {
         Item item1 = inventory.getItemInSlot(slotPair[0]);
         Item item2 = inventory.getItemInSlot(slotPair[1]);
 
-        boolean canUseSlotPair = item1 != null && item2 != null &&
+        boolean canUseSlotPair = item1 != null && item2 != null && item1.getId() != item2.getId() &&
                 (item1.getId() == itemA_id || item1.getId() == itemB_id) && (item2.getId() == itemA_id || item2.getId() == itemB_id);
         if(canUseSlotPair && inventory.interact(slotPair[0], USE)){
+            ScriptPaint.setStatus("ItemA -> ItemB");
             sleep(randomGaussian(300,100));
             return inventory.isItemSelected() && inventory.interact(slotPair[1], USE);
         } else {
+            ScriptPaint.setStatus("ItemA -> ItemB w/ backup interaction");
             if(inventory.interact(USE, itemA_id)) {
                 sleep(randomGaussian(300, 100));
                 return inventory.isItemSelected() && inventory.interact(USE, itemB_id);
@@ -91,8 +88,14 @@ public class CombineItems extends Task {
             warn("Unable to find the select item to create widget.");
             return false;
         }
+
+        //Tap spacebar, stop when player starts animating
         sleep(randomGaussian(300, 100));
         keyboard.pressKey(VK_SPACE);
-        return true;
+        ScriptPaint.setStatus("Spacebar-ing make widget");
+        boolean result = ConditionalSleep2.sleep(1500, () -> myPlayer().isAnimating());
+        sleep(randomGaussian(300, 100));
+        keyboard.releaseKey(VK_SPACE);
+        return result;
     }
 }

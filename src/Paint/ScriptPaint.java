@@ -1,8 +1,6 @@
 package Paint;
 
 import org.osbot.rs07.api.ui.RS2Widget;
-import org.osbot.rs07.api.ui.Skill;
-import org.osbot.rs07.api.util.ExperienceTracker;
 import org.osbot.rs07.canvas.paint.Painter;
 import org.osbot.rs07.input.mouse.BotMouseListener;
 import org.osbot.rs07.script.Script;
@@ -15,6 +13,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     private static final Color RED = new Color(255, 61, 50, 156);
     private static final Color GREEN = new Color(70, 255, 50, 156);
     private static String status;
+    private static int numItemsProcessed = 0;
     private final Script script;
     private final long startTime;
     private final String[][] xpTrackTemplate = {
@@ -50,6 +49,10 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         ScriptPaint.status = status;
     }
 
+    public static void incrementNumItemsProcessed(int increment) {
+        numItemsProcessed += increment;
+    }
+
     @Override
     public void onPaint(Graphics2D g2d) {
         g2d.setFont(font);
@@ -64,7 +67,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     }
 
     private void populatePlaceholderArray() {
-        xpTrackTemplate[1][1] = "TODO";
+        xpTrackTemplate[1][1] = String.valueOf(numItemsProcessed);
         xpTrackTemplate[2][0] = String.format("Status: %s", status);
         xpTrackTemplate[3][0] = formatTime(System.currentTimeMillis() - startTime);
     }
