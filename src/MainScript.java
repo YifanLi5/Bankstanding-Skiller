@@ -1,15 +1,16 @@
 import Paint.ScriptPaint;
-import Task.*;
+import Task.BankRestock;
+import Task.CombineItems;
+import Task.Idle;
+import Task.Task;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Objects;
 
-import static Util.ScriptConstants.itemA_id;
-import static Util.ScriptConstants.itemB_id;
-import static Util.ScriptConstants.combinationType;
-import static Util.ScriptConstants.CombinationType;
+import static Util.ScriptConstants.*;
 
 @ScriptManifest(author = "yfoo", name = "Item Combiner 2", info = "Does 14-14 or 1-27 bankstanding tasks", version = 0.1, logo = "https://imgur.com/a/7rxlGZw")
 public class MainScript extends Script {

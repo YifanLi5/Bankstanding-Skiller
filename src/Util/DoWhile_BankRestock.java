@@ -9,7 +9,6 @@ import org.osbot.rs07.utility.ConditionalLoop;
 import org.osbot.rs07.utility.ConditionalSleep2;
 
 import static Util.ScriptConstants.*;
-import static Util.ScriptConstants.itemB_id;
 
 
 public class DoWhile_BankRestock extends ConditionalLoop {
