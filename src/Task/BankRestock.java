@@ -12,6 +12,7 @@ import static Util.ScriptConstants.*;
 public class BankRestock extends Task {
 
     private final Filter<Item> outputItemFilter = item -> item.getId() != itemA_id && item.getId() != itemB_id && item.getId() != itemC_id;
+
     public BankRestock(Bot bot) {
         super(bot);
     }
@@ -28,7 +29,7 @@ public class BankRestock extends Task {
 
         DoWhile_BankRestock bankRestock = new DoWhile_BankRestock(bot, 3);
         bankRestock.start();
-        if(!bankRestock.getResult()) {
+        if (!bankRestock.getResult()) {
             warn("Failsafe! Unable to use bank restock after 3 attempts.");
             bot.getScriptExecutor().stop(false);
         }

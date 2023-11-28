@@ -20,6 +20,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
     final int _1666_VARBIT_VALUE_IF_WITHDRAW_ALL_SELECTED = 0b10000;
 
     MethodProvider methods;
+
     public DoWhile_BankRestock(Bot bot, int maxLoopCycles) {
         super(bot, maxLoopCycles);
         this.methods = bot.getMethods();
@@ -29,7 +30,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
     public boolean condition() {
         try {
             boolean loopAgain = true;
-            switch(combinationType) {
+            switch (combinationType) {
                 case _14_14:
                     boolean fixWithdrawXAmount = !methods.configs.isSet(
                             ID_OF_VARBIT_HANDLING_WITHDRAW_X_AMOUNT,
@@ -43,7 +44,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
                     loopAgain = fixWithdrawXAmount || toggleWithdrawXWidget ? !turnOnWithdrawXFor_14_14_Restock() : !handle_14_14_Restock();
                     break;
                 case _1_X_26:
-                    if(methods.inventory.getAmount(itemC_id) <= 0) {
+                    if (methods.inventory.getAmount(itemC_id) <= 0) {
                         methods.warn(String.format("Ran out of consumable itemC (id: %d)", itemC_id));
                         methods.bot.getScriptExecutor().stop(false);
                     }
@@ -81,21 +82,21 @@ public class DoWhile_BankRestock extends ConditionalLoop {
                 ID_OF_VARBIT_HANDLING_WITHDRAW_QUANTITY_SELECTED,
                 _1666_VARBIT_VALUE_IF_WITHDRAW_X_SELECTED
         );
-        if(!methods.bank.open()) {
+        if (!methods.bank.open()) {
             methods.log("Unable to open bank. May not be close enough.");
             return false;
         }
 
-        if(!withdrawXSetTo14) {
+        if (!withdrawXSetTo14) {
             ScriptPaint.setStatus("setting withdraw X -> 14");
-            if(methods.inventory.isEmpty() || methods.bank.depositAll()) {
-                if(!methods.bank.containsAll(itemA_id, itemB_id)) {
+            if (methods.inventory.isEmpty() || methods.bank.depositAll()) {
+                if (!methods.bank.containsAll(itemA_id, itemB_id)) {
                     methods.warn("Stopping script due to shortage of items.");
                     methods.bot.getScriptExecutor().stop(false);
                 } else {
                     boolean itemA_withdrawn = methods.bank.withdraw(itemA_id, 14);
                     boolean itemB_withdrawn = methods.bank.withdraw(itemB_id, 14);
-                    if(!(itemA_withdrawn && itemB_withdrawn)) {
+                    if (!(itemA_withdrawn && itemB_withdrawn)) {
                         methods.warn("Unable with withdraw 14 of itemA or itemB when trying to set withdraw X amount to 14.");
                         return false;
                     }
@@ -103,10 +104,10 @@ public class DoWhile_BankRestock extends ConditionalLoop {
             }
         }
 
-        if(!withdrawXWidgetActive) {
+        if (!withdrawXWidgetActive) {
             ScriptPaint.setStatus("toggling withdrawX -> Active");
             RS2Widget withdrawX = methods.widgets.getWidgetContainingText(BANK_ROOT_ID, "X");
-            if(withdrawX != null) {
+            if (withdrawX != null) {
                 WidgetDestination widgetDestination = new WidgetDestination(methods.bot, withdrawX);
                 methods.mouse.click(widgetDestination);
             }
@@ -128,15 +129,15 @@ public class DoWhile_BankRestock extends ConditionalLoop {
                 _1666_VARBIT_VALUE_IF_WITHDRAW_ALL_SELECTED
         );
 
-        if(!methods.bank.open()) {
+        if (!methods.bank.open()) {
             methods.log("Unable to open bank. May not be close enough.");
             return false;
         }
 
-        if(!withdrawAllWidgetActive) {
+        if (!withdrawAllWidgetActive) {
             ScriptPaint.setStatus("toggling withdraw All -> Active");
             RS2Widget withdrawAll = methods.widgets.getWidgetContainingText(BANK_ROOT_ID, "ALL");
-            if(withdrawAll != null) {
+            if (withdrawAll != null) {
                 WidgetDestination widgetDestination = new WidgetDestination(methods.bot, withdrawAll);
                 methods.mouse.click(widgetDestination);
             }
@@ -150,8 +151,8 @@ public class DoWhile_BankRestock extends ConditionalLoop {
     }
 
     private boolean handle_14_14_Restock() throws InterruptedException {
-        if(methods.bank.open() && methods.bank.depositAll()) {
-            if(!methods.bank.containsAll(itemA_id, itemB_id)) {
+        if (methods.bank.open() && methods.bank.depositAll()) {
+            if (!methods.bank.containsAll(itemA_id, itemB_id)) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(true);
             } else {
@@ -163,7 +164,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_1_27_Restock() throws InterruptedException {
         if (methods.bank.open()) {
-            if(!methods.bank.contains(itemB_id)) {
+            if (!methods.bank.contains(itemB_id)) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {
@@ -175,7 +176,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_1_X_26_Restock() throws InterruptedException {
         if (methods.bank.open()) {
-            if(!methods.bank.contains(itemB_id)) {
+            if (!methods.bank.contains(itemB_id)) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {

@@ -15,25 +15,6 @@ import static java.awt.event.KeyEvent.VK_SPACE;
 
 public class CombineItems extends Task {
 
-    class DoWhile_CombineItems extends ConditionalLoop {
-        DoWhile_CombineItems(Bot bot, int maxLoopCycles) {
-            super(bot, maxLoopCycles);
-        }
-
-        @Override
-        public boolean condition() {
-            try {
-                if(combineComponents()) {
-                    return !spacebarMakeWidget();
-                }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            inventory.deselectItem();
-            widgets.closeOpenInterface();
-            return true;
-        }
-    }
     public CombineItems(Bot bot) {
         super(bot);
     }
@@ -59,7 +40,7 @@ public class CombineItems extends Task {
         ConditionalSleep2.sleep(1000, () -> !inventory.isItemSelected() || inventory.deselectItem());
         DoWhile_CombineItems combineItems = new DoWhile_CombineItems(bot, 3);
         combineItems.start();
-        if(!combineItems.getResult()) {
+        if (!combineItems.getResult()) {
             warn("Failsafe! Unable to combine items after 3 attempts.");
             bot.getScriptExecutor().stop(false);
         }
@@ -73,13 +54,13 @@ public class CombineItems extends Task {
 
         boolean canUseSlotPair = item1 != null && item2 != null && item1.getId() != item2.getId() &&
                 (item1.getId() == itemA_id || item1.getId() == itemB_id) && (item2.getId() == itemA_id || item2.getId() == itemB_id);
-        if(canUseSlotPair && inventory.interact(slotPair[0], USE)){
+        if (canUseSlotPair && inventory.interact(slotPair[0], USE)) {
             ScriptPaint.setStatus("ItemA -> ItemB");
-            sleep(randomGaussian(300,100));
+            sleep(randomGaussian(300, 100));
             return inventory.isItemSelected() && inventory.interact(slotPair[1], USE);
         } else {
             ScriptPaint.setStatus("ItemA -> ItemB w/ backup interaction");
-            if(inventory.interact(USE, itemA_id)) {
+            if (inventory.interact(USE, itemA_id)) {
                 sleep(randomGaussian(300, 100));
                 return inventory.isItemSelected() && inventory.interact(USE, itemB_id);
             }
@@ -93,7 +74,7 @@ public class CombineItems extends Task {
             List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, "Make", "String"));
             return !widgets.isEmpty() && widgets.get(0) != null;
         });
-        if(!foundWidget) {
+        if (!foundWidget) {
             warn("Unable to find the select item to create widget.");
             return false;
         }
@@ -106,5 +87,25 @@ public class CombineItems extends Task {
         sleep(randomGaussian(300, 100));
         keyboard.releaseKey(VK_SPACE);
         return result;
+    }
+
+    class DoWhile_CombineItems extends ConditionalLoop {
+        DoWhile_CombineItems(Bot bot, int maxLoopCycles) {
+            super(bot, maxLoopCycles);
+        }
+
+        @Override
+        public boolean condition() {
+            try {
+                if (combineComponents()) {
+                    return !spacebarMakeWidget();
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            inventory.deselectItem();
+            widgets.closeOpenInterface();
+            return true;
+        }
     }
 }

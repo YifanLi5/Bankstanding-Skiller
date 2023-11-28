@@ -44,15 +44,15 @@ public abstract class Task extends MethodProvider {
         return runnableTasks.get(idx);
     }
 
+    public static void clearSubclassInstances() {
+        subclassInstances.clear();
+    }
+
     public abstract boolean shouldRun();
 
     public abstract void runTask() throws InterruptedException;
 
     public int probabilityWeight() {
         return 1;
-    }
-
-    public static void clearSubclassInstances() {
-        subclassInstances.clear();
     }
 }
