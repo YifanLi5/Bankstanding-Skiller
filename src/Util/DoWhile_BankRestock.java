@@ -40,18 +40,29 @@ public class DoWhile_BankRestock extends ConditionalLoop {
                             _1666_VARBIT_VALUE_IF_WITHDRAW_X_SELECTED
                     );
 
-                    loopAgain = fixWithdrawXAmount || toggleWithdrawXWidget ? !setWithdrawXFor_14_14_Restock() : !handle_14_14_Restock();
+                    loopAgain = fixWithdrawXAmount || toggleWithdrawXWidget ? !turnOnWithdrawXFor_14_14_Restock() : !handle_14_14_Restock();
+                    break;
+                case _1_X_26:
+                    if(methods.inventory.getAmount(itemC_id) <= 0) {
+                        methods.warn(String.format("Ran out of consumable itemC (id: %d)", itemC_id));
+                        methods.bot.getScriptExecutor().stop(false);
+                    }
+                    boolean toggleWithdrawAll1 = !methods.configs.isSet(
+                            ID_OF_VARBIT_HANDLING_WITHDRAW_QUANTITY_SELECTED,
+                            _1666_VARBIT_VALUE_IF_WITHDRAW_ALL_SELECTED
+                    );
+                    loopAgain = toggleWithdrawAll1 ? !turnOnWithdrawAll() : !handle_1_X_26_Restock();
                     break;
                 case _1_27:
-                    boolean toggleWithdrawAll = !methods.configs.isSet(
+                    boolean toggleWithdrawAll2 = !methods.configs.isSet(
                             ID_OF_VARBIT_HANDLING_WITHDRAW_QUANTITY_SELECTED,
                             _1666_VARBIT_VALUE_IF_WITHDRAW_ALL_SELECTED
                     );
 
-                    loopAgain = toggleWithdrawAll ? !setWithdrawAllFor_1_27_Restock() : !handle_1_27_Restock();
+                    loopAgain = toggleWithdrawAll2 ? !turnOnWithdrawAll() : !handle_1_27_Restock();
                     break;
                 default:
-                    methods.log("bad enum");
+                    methods.log("bad or unimplemented enum");
                     methods.bot.getScriptExecutor().stop(false);
             }
             return loopAgain;
@@ -60,7 +71,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
         }
     }
 
-    private boolean setWithdrawXFor_14_14_Restock() throws InterruptedException {
+    private boolean turnOnWithdrawXFor_14_14_Restock() throws InterruptedException {
         boolean withdrawXSetTo14 = methods.configs.isSet(
                 ID_OF_VARBIT_HANDLING_WITHDRAW_X_AMOUNT,
                 _304_WITHDRAW_X_AMOUNT_OF_14
@@ -111,7 +122,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
         );
     }
 
-    private boolean setWithdrawAllFor_1_27_Restock() throws InterruptedException {
+    private boolean turnOnWithdrawAll() throws InterruptedException {
         boolean withdrawAllWidgetActive = methods.configs.isSet(
                 ID_OF_VARBIT_HANDLING_WITHDRAW_QUANTITY_SELECTED,
                 _1666_VARBIT_VALUE_IF_WITHDRAW_ALL_SELECTED
@@ -152,11 +163,23 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_1_27_Restock() throws InterruptedException {
         if (methods.bank.open()) {
-            if(!methods.bank.containsAll(itemB_id)) {
+            if(!methods.bank.contains(itemB_id)) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {
                 return methods.bank.depositAllExcept(itemA_id) && methods.bank.withdrawAll(itemB_id);
+            }
+        }
+        return false;
+    }
+
+    private boolean handle_1_X_26_Restock() throws InterruptedException {
+        if (methods.bank.open()) {
+            if(!methods.bank.contains(itemB_id)) {
+                methods.log("Shortage of items.");
+                methods.bot.getScriptExecutor().stop(false);
+            } else {
+                return methods.bank.depositAllExcept(itemA_id, itemC_id) && methods.bank.withdrawAll(itemB_id);
             }
         }
         return false;

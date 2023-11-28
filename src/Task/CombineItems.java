@@ -40,7 +40,16 @@ public class CombineItems extends Task {
 
     @Override
     public boolean shouldRun() {
-        return inventory.containsAll(itemA_id, itemB_id) && (inventory.onlyContains(itemA_id, itemB_id) || dialogues.isPendingContinuation());
+        switch (combinationType) {
+            case _14_14:
+            case _1_27:
+                return inventory.containsAll(itemA_id, itemB_id) && (inventory.onlyContains(itemA_id, itemB_id) || dialogues.isPendingContinuation());
+            case _1_X_26:
+                return inventory.containsAll(itemA_id, itemB_id, itemC_id) && (inventory.onlyContains(itemA_id, itemB_id, itemC_id) || dialogues.isPendingContinuation());
+            default:
+                warn("recognized Enum shouldRun :: CombineItems");
+        }
+        return false;
     }
 
     @Override

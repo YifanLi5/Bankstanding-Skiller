@@ -137,7 +137,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     private void blockAccountInfo(Graphics2D g) {
         // blocks chat window, total XP (if toggled visible), HP, Prayer
         final int[][] widgetRootAndChild = new int[][]{
-                {162, 35},
+                {162, 55},
                 {122, 10},
                 {160, 9},
                 {160, 20},
@@ -150,7 +150,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
 
         g.setColor(Color.BLACK);
         for (RS2Widget widget : accountInfoWidgets) {
-            if (widget == null) {
+            if (widget == null || widget.isHidden()) {
                 continue;
             }
             g.fill(widget.getBounds());
@@ -184,6 +184,11 @@ public class ScriptPaint extends BotMouseListener implements Painter {
                 script.log("showPaint: " + showPaint);
             }
         }
+    }
+
+    public void deconstructPainter() {
+        script.getBot().removePainter(this);
+        script.getBot().removeMouseListener(this);
     }
 
     private void drawMouse(Graphics2D g) {

@@ -6,7 +6,9 @@ import org.osbot.rs07.script.MethodProvider;
 import java.util.ArrayList;
 
 public abstract class Task extends MethodProvider {
-    static ArrayList<Task> subclassInstances = new ArrayList<>();
+
+
+    private static final ArrayList<Task> subclassInstances = new ArrayList<>();
 
     public Task(Bot bot) {
         exchangeContext(bot);
@@ -48,5 +50,9 @@ public abstract class Task extends MethodProvider {
 
     public int probabilityWeight() {
         return 1;
+    }
+
+    public static void clearSubclassInstances() {
+        subclassInstances.clear();
     }
 }

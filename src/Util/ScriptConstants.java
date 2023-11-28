@@ -6,28 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ScriptConstants {
 
-    // if combinationType is _1_27, itemA is the tool (Knife), itemB is the consumable (logs).
-    // if combinationType is _1_X_26, item A is the tool (needle), itemB is the consumable (leather), itemC is the secondary consumable (thread)
+    // if combinationType is _14_14, items A and B are the 2 components (longbow (u) + bow string). ItemC is -1/null
+    // if combinationType is _1_27, itemA is the tool (Knife), itemB is the consumable (logs). ItemC is -1/null
+    // if combinationType is _1_X_26, item A is the tool (needle), itemB is the consumable (leather), itemC is the stackable secondary consumable (thread)
     public static int itemA_id = -1;
     public static int itemB_id = -1;
-
     public static int itemC_id = -1;
-
-    public static int getItemA_id() {
-        return itemA_id;
-    }
-
-    public static void setItemA_id(int itemA_id) {
-        ScriptConstants.itemA_id = itemA_id;
-    }
-
-    public static int getItemB_id() {
-        return itemB_id;
-    }
-
-    public static void setItemB_id(int itemB_id) {
-        ScriptConstants.itemB_id = itemB_id;
-    }
 
     public enum CombinationType {
         _14_14,     // ex: longbow (u) + bow string
@@ -41,12 +25,13 @@ public class ScriptConstants {
      * Inventory slots visual guide
      * 0  1  2  3
      * 4  5  6  7
-     * 8  9 10 11
+     * 8  9  10 11
      * 12 13 14 15
      * 16 17 18 19
      * 20 21 22 23
      * 24 25 26 27
      */
+    // For randomizing which item slots are used on each other.
     private static final Tuple<int[], Integer>[] _1_27_InvSlotPairs = new Tuple[]{
             new Tuple<>(new int[]{0, 1}, ThreadLocalRandom.current().nextInt(1, 10)),
             new Tuple<>(new int[]{0, 4}, ThreadLocalRandom.current().nextInt(1, 10)),
@@ -62,24 +47,36 @@ public class ScriptConstants {
 
     private static final Tuple<int[], Integer>[] _1_X_26_InvSlotPairs = new Tuple[]{
             new Tuple<>(new int[]{0, 4}, 1),
+            new Tuple<>(new int[]{0, 5}, 1)
     };
 
     public static int[] getInvSlotPair() {
         if(combinationType == null) {
             throw new NullPointerException("Must initialize combinationType");
         }
-        Tuple<int[], Integer>[] slotPairArr = (combinationType == CombinationType._14_14) ?
-                _14_14_InvSlotPairs :
-                _1_27_InvSlotPairs;
+
+        Tuple<int[], Integer>[] slotPairArr;
+        switch(combinationType) {
+            case _1_27:
+                slotPairArr = _1_27_InvSlotPairs;
+                break;
+            case _14_14:
+                slotPairArr = _14_14_InvSlotPairs;
+                break;
+            case _1_X_26:
+                slotPairArr = _1_X_26_InvSlotPairs;
+                break;
+            default:
+                slotPairArr = null;
+        }
 
         int weightingSum = Arrays.stream(slotPairArr).mapToInt(Tuple::getSecond).sum();
         int roll = ThreadLocalRandom.current().nextInt(weightingSum);
         int idx = 0;
         for (; idx < slotPairArr.length; idx++) {
             roll -= slotPairArr[idx].getSecond();
-            if (roll < 0) {
+            if (roll < 0)
                 break;
-            }
         }
         return slotPairArr[idx].getFirst();
     }
