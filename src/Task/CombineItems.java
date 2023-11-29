@@ -52,8 +52,13 @@ public class CombineItems extends Task {
         Item item1 = inventory.getItemInSlot(slotPair[0]);
         Item item2 = inventory.getItemInSlot(slotPair[1]);
 
-        boolean canUseSlotPair = item1 != null && item2 != null && item1.getId() != item2.getId() &&
-                (item1.getId() == itemA.getId() || item1.getId() == itemB.getId()) && (item2.getId() == itemA.getId() || item2.getId() == itemB.getId());
+        boolean notNull = item1 != null && item2 != null;
+        boolean notSameItem = notNull && item1.getId() != item2.getId();
+        // A mostly reliable way to determine item1 and 2 are the configured itemA and itemB from before.
+        boolean sumTo0 = notNull && (item1.getId() + item2.getId() - itemA.getId() - itemB.getId() == 0);
+
+        boolean canUseSlotPair = notSameItem && sumTo0;
+
         if (canUseSlotPair && inventory.interact(slotPair[0], USE)) {
             ScriptPaint.setStatus("ItemA -> ItemB");
             sleep(randomGaussian(300, 100));
