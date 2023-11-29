@@ -45,6 +45,9 @@ public abstract class Task extends MethodProvider {
     }
 
     public static void clearSubclassInstances() {
+        for (Task task: subclassInstances) {
+            task.cleanUp();
+        }
         subclassInstances.clear();
     }
 
@@ -54,5 +57,9 @@ public abstract class Task extends MethodProvider {
 
     public int probabilityWeight() {
         return 1;
+    }
+
+    void cleanUp() {
+        log("Cleaning up " + this.getClass().getSimpleName());
     }
 }

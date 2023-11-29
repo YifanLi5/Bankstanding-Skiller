@@ -58,4 +58,10 @@ public class Idle extends Task implements GameTickListener {
             hasAnimatedRecently = false;
         }
     }
+
+    @Override
+    void cleanUp() {
+        super.cleanUp();
+        bot.removeGameTickListener(this);
+    }
 }
