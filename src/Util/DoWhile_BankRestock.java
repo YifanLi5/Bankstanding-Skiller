@@ -30,6 +30,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
     public boolean condition() {
         try {
             boolean loopAgain = true;
+            ScriptPaint.setStatus(String.format("Bank restock (%s)", combinationType));
             switch (combinationType) {
                 case _14_14:
                     boolean fixWithdrawXAmount = !methods.configs.isSet(
@@ -151,7 +152,6 @@ public class DoWhile_BankRestock extends ConditionalLoop {
     }
 
     private boolean handle_14_14_Restock() throws InterruptedException {
-        ScriptPaint.setStatus("Withdrawing type: 14_14");
         if (methods.bank.open() && methods.bank.depositAll()) {
             if (!methods.bank.containsAll(itemA.getId(), itemB.getId())) {
                 methods.log("Shortage of items.");
@@ -164,7 +164,6 @@ public class DoWhile_BankRestock extends ConditionalLoop {
     }
 
     private boolean handle_1_27_Restock() throws InterruptedException {
-        ScriptPaint.setStatus("Withdrawing type: 1_27");
         if (methods.bank.open()) {
             if (!methods.bank.contains(itemB.getId())) {
                 methods.log("Shortage of items.");
@@ -177,7 +176,6 @@ public class DoWhile_BankRestock extends ConditionalLoop {
     }
 
     private boolean handle_1_X_26_Restock() throws InterruptedException {
-        ScriptPaint.setStatus("Withdrawing type: 1_X_26");
         if (methods.bank.open()) {
             if (!methods.bank.contains(itemB.getId())) {
                 methods.log("Shortage of items.");

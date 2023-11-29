@@ -13,7 +13,7 @@ import java.util.HashMap;
 import static Task.Task.clearSubclassInstances;
 import static Util.ScriptConstants.*;
 
-@ScriptManifest(author = "yfoo", name = "(debug2) Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 0.9, logo = "https://i.imgur.com/un9b95T.png")
+@ScriptManifest(author = "yfoo", name = "(debug5) Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 0.9, logo = "https://i.imgur.com/un9b95T.png")
 public class MainScript extends Script {
     // Todo: Add CLI support
     private static final int FAILSAFE_LIMIT = 5;
