@@ -11,7 +11,7 @@ import static Util.ScriptConstants.*;
 //Used for 1_27 or 14_14
 public class BankRestock extends Task {
 
-    private final Filter<Item> outputItemFilter = item -> item.getId() != itemA_id && item.getId() != itemB_id && item.getId() != itemC_id;
+    private final Filter<Item> outputItemFilter = item -> item.getId() != itemA.getId() && item.getId() != itemB.getId() && item.getId() != getItemC_Id();
 
     public BankRestock(Bot bot) {
         super(bot);
@@ -19,7 +19,7 @@ public class BankRestock extends Task {
 
     @Override
     public boolean shouldRun() {
-        return !inventory.containsAll(itemA_id, itemB_id);
+        return !inventory.containsAll(itemA.getId(), itemB.getId());
     }
 
     @Override

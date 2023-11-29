@@ -24,9 +24,9 @@ public class CombineItems extends Task {
         switch (combinationType) {
             case _14_14:
             case _1_27:
-                return inventory.containsAll(itemA_id, itemB_id) && (inventory.onlyContains(itemA_id, itemB_id) || dialogues.isPendingContinuation());
+                return inventory.containsAll(itemA.getId(), itemB.getId()) && (inventory.onlyContains(itemA.getId(), itemB.getId()) || dialogues.isPendingContinuation());
             case _1_X_26:
-                return inventory.containsAll(itemA_id, itemB_id, itemC_id) && (inventory.onlyContains(itemA_id, itemB_id, itemC_id) || dialogues.isPendingContinuation());
+                return inventory.containsAll(itemA.getId(), itemB.getId(), getItemC_Id()) && (inventory.onlyContains(itemA.getId(), itemB.getId(), getItemC_Id()) || dialogues.isPendingContinuation());
             default:
                 warn("recognized Enum shouldRun :: CombineItems");
         }
@@ -53,16 +53,16 @@ public class CombineItems extends Task {
         Item item2 = inventory.getItemInSlot(slotPair[1]);
 
         boolean canUseSlotPair = item1 != null && item2 != null && item1.getId() != item2.getId() &&
-                (item1.getId() == itemA_id || item1.getId() == itemB_id) && (item2.getId() == itemA_id || item2.getId() == itemB_id);
+                (item1.getId() == itemA.getId() || item1.getId() == itemB.getId()) && (item2.getId() == itemA.getId() || item2.getId() == itemB.getId());
         if (canUseSlotPair && inventory.interact(slotPair[0], USE)) {
             ScriptPaint.setStatus("ItemA -> ItemB");
             sleep(randomGaussian(300, 100));
             return inventory.isItemSelected() && inventory.interact(slotPair[1], USE);
         } else {
             ScriptPaint.setStatus("ItemA -> ItemB w/ backup interaction");
-            if (inventory.interact(USE, itemA_id)) {
+            if (inventory.interact(USE, itemA.getId())) {
                 sleep(randomGaussian(300, 100));
-                return inventory.isItemSelected() && inventory.interact(USE, itemB_id);
+                return inventory.isItemSelected() && inventory.interact(USE, itemB.getId());
             }
         }
         return false;

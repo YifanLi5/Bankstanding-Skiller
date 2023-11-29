@@ -16,13 +16,13 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     private static int numItemsProcessed = 0;
     private final Script script;
     private final long startTime;
-    private final String[][] xpTrackTemplate = {
-            {"", "Quantity"},
-            {"Items Processed", "[1][1]"},
+    private final String[][] template = {
+            {""},
+            {"[1][0]"},
             {"[2][0]"},
             {"[3][0]"}
     };
-    private final int cellWidth = 125;
+    private final int cellWidth = 250;
     private final int cellHeight = 35;
     private final Rectangle togglePaintRectangle;
     private final Font font = new Font("Arial", Font.PLAIN, 14);
@@ -33,7 +33,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         this.script = script;
 
         int maxNumCols = 0;
-        for (String[] row : xpTrackTemplate) {
+        for (String[] row : template) {
             maxNumCols = Math.max(maxNumCols, row.length);
         }
 
@@ -58,18 +58,18 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         g2d.setFont(font);
         drawMouse(g2d);
         if (showPaint) {
-            populatePlaceholderArray();
-            drawGrid(g2d, xpTrackTemplate, cellWidth, cellHeight);
+            populateTemplate();
+            drawGrid(g2d, template, cellWidth, cellHeight);
             blockAccountInfo(g2d);
         }
         drawCenteredStr(g2d, togglePaintRectangle, showPaint ? "--Hide--" : "--Show--");
 
     }
 
-    private void populatePlaceholderArray() {
-        xpTrackTemplate[1][1] = String.valueOf(numItemsProcessed);
-        xpTrackTemplate[2][0] = String.format("Status: %s", status);
-        xpTrackTemplate[3][0] = formatTime(System.currentTimeMillis() - startTime);
+    private void populateTemplate() {
+        template[1][0] = String.format("# processed: %d", numItemsProcessed);
+        template[2][0] = String.format("Status: %s", status);
+        template[3][0] = formatTime(System.currentTimeMillis() - startTime);
     }
 
 

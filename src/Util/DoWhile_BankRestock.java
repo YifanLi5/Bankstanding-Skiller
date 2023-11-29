@@ -44,8 +44,8 @@ public class DoWhile_BankRestock extends ConditionalLoop {
                     loopAgain = fixWithdrawXAmount || toggleWithdrawXWidget ? !turnOnWithdrawXFor_14_14_Restock() : !handle_14_14_Restock();
                     break;
                 case _1_X_26:
-                    if (methods.inventory.getAmount(itemC_id) <= 0) {
-                        methods.warn(String.format("Ran out of consumable itemC (id: %d)", itemC_id));
+                    if (methods.inventory.getAmount(getItemC_Id()) <= 0) {
+                        methods.warn(String.format("Ran out of consumable itemC (id: %d)", getItemC_Id()));
                         methods.bot.getScriptExecutor().stop(false);
                     }
                     boolean toggleWithdrawAll1 = !methods.configs.isSet(
@@ -90,12 +90,12 @@ public class DoWhile_BankRestock extends ConditionalLoop {
         if (!withdrawXSetTo14) {
             ScriptPaint.setStatus("setting withdraw X -> 14");
             if (methods.inventory.isEmpty() || methods.bank.depositAll()) {
-                if (!methods.bank.containsAll(itemA_id, itemB_id)) {
+                if (!methods.bank.containsAll(itemA.getId(), itemB.getId())) {
                     methods.warn("Stopping script due to shortage of items.");
                     methods.bot.getScriptExecutor().stop(false);
                 } else {
-                    boolean itemA_withdrawn = methods.bank.withdraw(itemA_id, 14);
-                    boolean itemB_withdrawn = methods.bank.withdraw(itemB_id, 14);
+                    boolean itemA_withdrawn = methods.bank.withdraw(itemA.getId(), 14);
+                    boolean itemB_withdrawn = methods.bank.withdraw(itemB.getId(), 14);
                     if (!(itemA_withdrawn && itemB_withdrawn)) {
                         methods.warn("Unable with withdraw 14 of itemA or itemB when trying to set withdraw X amount to 14.");
                         return false;
@@ -152,11 +152,11 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_14_14_Restock() throws InterruptedException {
         if (methods.bank.open() && methods.bank.depositAll()) {
-            if (!methods.bank.containsAll(itemA_id, itemB_id)) {
+            if (!methods.bank.containsAll(itemA.getId(), itemB.getId())) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(true);
             } else {
-                return methods.bank.withdraw(itemA_id, 14) && methods.bank.withdraw(itemB_id, 14);
+                return methods.bank.withdraw(itemA.getId(), 14) && methods.bank.withdraw(itemB.getId(), 14);
             }
         }
         return false;
@@ -164,11 +164,11 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_1_27_Restock() throws InterruptedException {
         if (methods.bank.open()) {
-            if (!methods.bank.contains(itemB_id)) {
+            if (!methods.bank.contains(itemB.getId())) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {
-                return methods.bank.depositAllExcept(itemA_id) && methods.bank.withdrawAll(itemB_id);
+                return methods.bank.depositAllExcept(itemA.getId()) && methods.bank.withdrawAll(itemB.getId());
             }
         }
         return false;
@@ -176,11 +176,11 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_1_X_26_Restock() throws InterruptedException {
         if (methods.bank.open()) {
-            if (!methods.bank.contains(itemB_id)) {
+            if (!methods.bank.contains(itemB.getId())) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {
-                return methods.bank.depositAllExcept(itemA_id, itemC_id) && methods.bank.withdrawAll(itemB_id);
+                return methods.bank.depositAllExcept(itemA.getId(), getItemC_Id()) && methods.bank.withdrawAll(itemB.getId());
             }
         }
         return false;

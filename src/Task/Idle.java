@@ -11,7 +11,7 @@ public class Idle extends Task {
 
         @Override
         public boolean condition() {
-            return !inventory.containsAll(itemA_id, itemB_id) || dialogues.isPendingContinuation();
+            return !inventory.containsAll(itemA.getId(), itemB.getId()) || dialogues.isPendingContinuation();
         }
     };
 
@@ -30,7 +30,7 @@ public class Idle extends Task {
         ScriptPaint.setStatus("Combining Items... (Idle)");
         mouse.moveOutsideScreen();
         sleepUntilInventoryProcessed.sleep();
-        if (myPlayer().getAnimation() == -1 && !mouse.isOnScreen()) {
+        if (!mouse.isOnScreen()) {
             ScriptPaint.setStatus("Simulating AFK");
             long idleTime = randomSessionGaussian();
             log(String.format("Simulating AFK for %dms", idleTime));

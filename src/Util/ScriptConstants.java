@@ -1,5 +1,7 @@
 package Util;
 
+import org.osbot.rs07.api.def.ItemDefinition;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,9 +40,14 @@ public class ScriptConstants {
     // if combinationType is _14_14, items A and B are the 2 components (longbow (u) + bow string). ItemC is -1/null
     // if combinationType is _1_27, itemA is the tool (Knife), itemB is the consumable (logs). ItemC is -1/null
     // if combinationType is _1_X_26, item A is the tool (needle), itemB is the consumable (leather), itemC is the stackable secondary consumable (thread)
-    public static int itemA_id = -1;
-    public static int itemB_id = -1;
-    public static int itemC_id = -1;
+
+    public static ItemDefinition itemA = null;
+    public static ItemDefinition itemB = null;
+    public static ItemDefinition itemC = null;
+
+    public static int getItemC_Id() {
+        return itemC != null ? itemC.getId() : -1;
+    }
     public static CombinationType combinationType;
 
     static {
