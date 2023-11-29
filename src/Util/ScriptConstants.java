@@ -37,23 +37,23 @@ public class ScriptConstants {
             new Tuple<>(new int[]{0, 4}, 1),
             new Tuple<>(new int[]{0, 5}, 1)
     };
+
     // if combinationType is _14_14, items A and B are the 2 components (longbow (u) + bow string). ItemC is -1/null
     // if combinationType is _1_27, itemA is the tool (Knife), itemB is the consumable (logs). ItemC is -1/null
     // if combinationType is _1_X_26, item A is the tool (needle), itemB is the consumable (leather), itemC is the stackable secondary consumable (thread)
-
     public static ItemDefinition itemA = null;
     public static ItemDefinition itemB = null;
     public static ItemDefinition itemC = null;
-
-    public static int getItemC_Id() {
-        return itemC != null ? itemC.getId() : -1;
-    }
     public static CombinationType combinationType;
 
     static {
         ThreadLocalRandom current = ThreadLocalRandom.current();
         SESSION_MEAN = current.nextInt(3500, 6500);
         SESSION_STD_DEV = current.nextInt(1000, 2000);
+    }
+
+    public static int getItemC_Id() {
+        return itemC != null ? itemC.getId() : -1;
     }
 
     public static int[] getInvSlotPair() {

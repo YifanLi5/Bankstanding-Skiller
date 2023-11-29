@@ -75,9 +75,9 @@ public class MainScript extends Script {
             for (Item item : intItemMapping.values()) {
                 if (itemA == null && inventory.getAmount(item.getId()) == 1 && item.getAmount() == 1) {
                     itemA = item.getDefinition();
-                } else if(itemB == null && inventory.getAmount(item.getId()) > 1) {
+                } else if (itemB == null && inventory.getAmount(item.getId()) > 1) {
                     itemB = item.getDefinition();
-                } else if(itemC == null && item.getNotedId() == -1 && item.getAmount() > 1) {
+                } else if (itemC == null && item.getNotedId() == -1 && item.getAmount() > 1) {
                     itemC = item.getDefinition();
                 } else {
                     warn("Failsafe: Else condition hit when attempting to assign 3 items to A,B,C.");
@@ -87,20 +87,19 @@ public class MainScript extends Script {
             }
         } else if (intItemMapping.size() == 2) {
             for (Item item : intItemMapping.values()) {
-                if(inventory.getAmount(item.getId()) == 1 && itemA == null) {
+                if (inventory.getAmount(item.getId()) == 1 && itemA == null) {
                     itemA = item.getDefinition();
-                } else if(inventory.getAmount(item.getId()) == 27 && itemB == null) {
+                } else if (inventory.getAmount(item.getId()) == 27 && itemB == null) {
                     itemB = item.getDefinition();
-                }
-                else if(inventory.getAmount(item.getId()) == 14) {
-                    if(itemA == null)
+                } else if (inventory.getAmount(item.getId()) == 14) {
+                    if (itemA == null)
                         itemA = item.getDefinition();
                     else if (itemB == null)
                         itemB = item.getDefinition();
                 }
             }
 
-            if(inventory.getAmount(itemA.getId()) == 1 && inventory.getAmount(itemB.getId()) == 27) {
+            if (inventory.getAmount(itemA.getId()) == 1 && inventory.getAmount(itemB.getId()) == 27) {
                 combinationType = CombinationType._1_27;
             } else if (inventory.getAmount(itemA.getId()) == inventory.getAmount(itemB.getId())) {
                 combinationType = CombinationType._14_14;
@@ -115,16 +114,16 @@ public class MainScript extends Script {
                     "ex: 14 unf potions + 14 herbs OR 1 knife + 27 logs OR 1 needle, X thread, 26 leather");
             stop(false);
             return;
-        }  else {
+        } else {
             warn("Inventory is not properly setup.");
             stop(false);
             return;
         }
 
-        if(itemA == null || itemB == null) {
+        if (itemA == null || itemB == null) {
             warn("Failed assert, itemA and itemB cannot be null!");
             stop(false);
-        } else if(combinationType == CombinationType._1_X_26 && itemC == null) {
+        } else if (combinationType == CombinationType._1_X_26 && itemC == null) {
             warn("Failed assert, itemC cannot be null if combination type is _1_X_26.");
             stop(false);
         }
