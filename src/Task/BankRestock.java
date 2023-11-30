@@ -5,21 +5,37 @@ import Util.DoWhile_BankRestock;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.model.Item;
+import org.osbot.rs07.listener.GameTickListener;
 
 import static Util.ScriptConstants.*;
 
 //Used for 1_27 or 14_14
-public class BankRestock extends Task {
+public class BankRestock extends Task implements GameTickListener {
 
     private final Filter<Item> outputItemFilter = item -> item.getId() != itemA.getId() && item.getId() != itemB.getId() && item.getId() != getItemC_Id();
 
     public BankRestock(Bot bot) {
         super(bot);
+        bot.addGameTickListener(this);
     }
 
     @Override
     public boolean shouldRun() {
-        return !inventory.containsAll(itemA.getId(), itemB.getId());
+        boolean inventoryMatchesRestockedState = false;
+        switch (combinationType) {
+            case _1_27:
+                inventoryMatchesRestockedState = inventory.getAmount(itemA.getId()) == 1 && inventory.getAmount(itemB.getId()) == 27;
+                break;
+            case _14_14:
+                inventoryMatchesRestockedState = inventory.getAmount(itemA.getId()) == 14 && inventory.getAmount(itemB.getId()) == 14;
+                break;
+            case _1_X_26:
+                inventoryMatchesRestockedState = inventory.getAmount(itemA.getId()) == 1
+                        && inventory.getAmount(itemB.getId()) == 26
+                        && inventory.contains(itemC.getId());
+        }
+
+        return !hasAnimatedRecently && !inventoryMatchesRestockedState;
     }
 
     @Override

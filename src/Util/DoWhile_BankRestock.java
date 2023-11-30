@@ -181,7 +181,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {
-                return methods.bank.depositAllExcept(itemA.getId(), getItemC_Id()) && methods.bank.withdrawAll(itemB.getId());
+                return methods.bank.depositAllExcept(itemA.getId(), itemB.getId(), getItemC_Id()) && methods.bank.withdrawAll(itemB.getId());
             }
         }
         return false;
