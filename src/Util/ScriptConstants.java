@@ -24,20 +24,28 @@ public class ScriptConstants {
     // For randomizing which item slots are used on each other.
     private static final Tuple<int[], Integer>[] _1_27_InvSlotPairs = new Tuple[]{
             new Tuple<>(new int[]{0, 1}, ThreadLocalRandom.current().nextInt(1, 10)),
+            new Tuple<>(new int[]{1, 0}, ThreadLocalRandom.current().nextInt(1, 10)),
             new Tuple<>(new int[]{0, 4}, ThreadLocalRandom.current().nextInt(1, 10)),
-            new Tuple<>(new int[]{0, 5}, ThreadLocalRandom.current().nextInt(1, 10))
+            new Tuple<>(new int[]{4, 0}, ThreadLocalRandom.current().nextInt(1, 10)),
+            new Tuple<>(new int[]{0, 5}, ThreadLocalRandom.current().nextInt(1, 10)),
+            new Tuple<>(new int[]{5, 0}, ThreadLocalRandom.current().nextInt(1, 10))
     };
     private static final Tuple<int[], Integer>[] _14_14_InvSlotPairs = new Tuple[]{
             new Tuple<>(new int[]{12, 16}, ThreadLocalRandom.current().nextInt(1, 10)),
+            new Tuple<>(new int[]{16, 12}, ThreadLocalRandom.current().nextInt(1, 10)),
             new Tuple<>(new int[]{13, 17}, ThreadLocalRandom.current().nextInt(1, 10)),
+            new Tuple<>(new int[]{17, 13}, ThreadLocalRandom.current().nextInt(1, 10)),
             new Tuple<>(new int[]{10, 14}, ThreadLocalRandom.current().nextInt(1, 10)),
-            new Tuple<>(new int[]{11, 15}, ThreadLocalRandom.current().nextInt(1, 10))
+            new Tuple<>(new int[]{14, 10}, ThreadLocalRandom.current().nextInt(1, 10)),
+            new Tuple<>(new int[]{11, 15}, ThreadLocalRandom.current().nextInt(1, 10)),
+            new Tuple<>(new int[]{15, 11}, ThreadLocalRandom.current().nextInt(1, 10))
     };
     private static final Tuple<int[], Integer>[] _1_X_26_InvSlotPairs = new Tuple[]{
             new Tuple<>(new int[]{0, 4}, 1),
-            new Tuple<>(new int[]{0, 5}, 1)
+            new Tuple<>(new int[]{4, 0}, 1),
+            new Tuple<>(new int[]{0, 5}, 1),
+            new Tuple<>(new int[]{5, 0}, 1)
     };
-
     // if combinationType is _14_14, items A and B are the 2 components (longbow (u) + bow string). ItemC is -1/null
     // if combinationType is _1_27, itemA is the tool (Knife), itemB is the consumable (logs). ItemC is -1/null
     // if combinationType is _1_X_26, item A is the tool (needle), itemB is the consumable (leather), itemC is the stackable secondary consumable (thread)

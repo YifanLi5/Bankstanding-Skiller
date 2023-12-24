@@ -57,10 +57,11 @@ public class CombineItems extends Task {
 
         boolean notNull = item1 != null && item2 != null;
         boolean notSameItem = notNull && item1.getId() != item2.getId();
-        // A mostly reliable way to determine item1 and 2 are the configured itemA and itemB from before.
+        // Assert Item1 and 2 are the equivalent items determined at script start (ItemA and B).
+        // Not foolproof, but a simple method
         boolean sumTo0 = notNull && (item1.getId() + item2.getId() - itemA.getId() - itemB.getId() == 0);
-
         boolean canUseSlotPair = notSameItem && sumTo0;
+
 
         if (canUseSlotPair && inventory.interact(slotPair[0], USE)) {
             ScriptPaint.setStatus("ItemA -> ItemB");
@@ -104,16 +105,19 @@ public class CombineItems extends Task {
 
         @Override
         public boolean condition() {
+            boolean loopAgain = true;
             try {
                 if (combineComponents()) {
-                    return !spacebarMakeWidget();
+                    loopAgain = !spacebarMakeWidget();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            inventory.deselectItem();
-            widgets.closeOpenInterface();
-            return true;
+            if (loopAgain) {
+                inventory.deselectItem();
+                widgets.closeOpenInterface();
+            }
+            return loopAgain;
         }
     }
 }
