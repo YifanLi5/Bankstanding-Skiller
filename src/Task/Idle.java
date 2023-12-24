@@ -5,7 +5,7 @@ import org.osbot.rs07.Bot;
 import org.osbot.rs07.listener.GameTickListener;
 import org.osbot.rs07.utility.ConditionalSleep;
 
-import static Util.ScriptConstants.*;
+import static Util.ScriptConstants.randomSessionGaussian;
 
 public class Idle extends Task implements GameTickListener {
     private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000) {

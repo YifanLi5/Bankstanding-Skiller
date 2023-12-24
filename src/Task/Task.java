@@ -51,7 +51,7 @@ public abstract class Task extends MethodProvider implements GameTickListener {
     }
 
     public static void clearSubclassInstances() {
-        for (Task task: subclassInstances) {
+        for (Task task : subclassInstances) {
             task.cleanUp();
         }
         subclassInstances.clear();
@@ -72,13 +72,13 @@ public abstract class Task extends MethodProvider implements GameTickListener {
 
     @Override
     public void onGameTick() {
-        if(myPlayer().isAnimating()) {
+        if (myPlayer().isAnimating()) {
             hasAnimatedRecently = true;
             animationCapacitorRunoff = 3;
         } else {
             animationCapacitorRunoff -= 1;
         }
-        if(animationCapacitorRunoff <= 0) {
+        if (animationCapacitorRunoff <= 0) {
             hasAnimatedRecently = false;
         }
     }

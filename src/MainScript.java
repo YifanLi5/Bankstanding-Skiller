@@ -13,10 +13,11 @@ import java.util.HashMap;
 import static Task.Task.clearSubclassInstances;
 import static Util.ScriptConstants.*;
 
-@ScriptManifest(author = "yfoo", name = "(debug11) Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 0.9, logo = "https://i.imgur.com/un9b95T.png")
+@ScriptManifest(author = "yfoo", name = "(debug13) Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 0.9, logo = "https://i.imgur.com/un9b95T.png")
 public class MainScript extends Script {
     // Todo: Add CLI support
     private static final int FAILSAFE_LIMIT = 5;
+    //N_I_H == Nothing interesting happened
     private static final int N_I_H_LIMIT = 5;
     private static int noNextTaskCount = 0;
     private static int nothingInterestingHappensCount = 0;
