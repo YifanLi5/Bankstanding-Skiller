@@ -1,17 +1,21 @@
 package Task;
 
 import Paint.ScriptPaint;
+import Util.StartUpUtil;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.RS2Widget;
+import org.osbot.rs07.utility.Condition;
 import org.osbot.rs07.utility.ConditionalLoop;
 import org.osbot.rs07.utility.ConditionalSleep2;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static Util.ScriptConstants.*;
-import static java.awt.event.KeyEvent.VK_SPACE;
 
 public class CombineItems extends Task {
 
@@ -77,24 +81,46 @@ public class CombineItems extends Task {
         return false;
     }
 
+
+
     private boolean spacebarMakeWidget() throws InterruptedException {
+        final RS2Widget[] selectOptionWidget = new RS2Widget[1];
         boolean foundWidget = ConditionalSleep2.sleep(1500, () -> {
             // Actions may not be inclusive of every "Create" style verb. So put more here as needed.
             List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, "Make", "String"));
-            return !widgets.isEmpty() && widgets.get(0) != null;
+            if(!widgets.isEmpty()) {
+                selectOptionWidget[0] = widgets.get(0);
+            }
+            return !widgets.isEmpty();
         });
         if (!foundWidget) {
             warn("Unable to find the select item to create widget.");
             return false;
         }
 
-        //Tap spacebar, stop when player starts animating
-        sleep(randomGaussian(300, 100));
-        keyboard.pressKey(VK_SPACE);
-        ScriptPaint.setStatus("Spacebar-ing make widget");
-        boolean result = ConditionalSleep2.sleep(1500, () -> myPlayer().isAnimating());
-        sleep(randomGaussian(300, 100));
-        keyboard.releaseKey(VK_SPACE);
+        // set the correct spacebar make option based on script startup param.
+        // config 2673 determines which make option is currently bound to spacebar.
+        boolean result;
+        if(StartUpUtil.spacebarMakeOptionParam != -1 && !configs.isSet(2673, StartUpUtil.spacebarMakeOptionParam-1)) {
+            char keyToType = (char) ('0' + StartUpUtil.spacebarMakeOptionParam);
+            String status = "Setting ingame make option -> " + keyToType;
+            ScriptPaint.setStatus(status);
+            log(status);
+
+            result = keyboard.typeContinualKey(keyToType, new Condition() {
+                @Override
+                public boolean evaluate() {
+                    return myPlayer().isAnimating();
+                }
+            });
+        } else {
+            sleep(randomGaussian(300, 100));
+            keyboard.pressKey(KeyEvent.VK_SPACE);
+            ScriptPaint.setStatus("Spacebar-ing make widget");
+            result = ConditionalSleep2.sleep(1500, () -> myPlayer().isAnimating());
+            sleep(randomGaussian(300, 100));
+            keyboard.releaseKey(KeyEvent.VK_SPACE);
+        }
         return result;
     }
 
