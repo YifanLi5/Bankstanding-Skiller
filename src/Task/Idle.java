@@ -1,29 +1,30 @@
 package Task;
 
 import Paint.ScriptPaint;
+import Util.GameTickUtil;
 import org.osbot.rs07.Bot;
-import org.osbot.rs07.listener.GameTickListener;
 import org.osbot.rs07.utility.ConditionalSleep;
 
 import static Util.ScriptConstants.randomSessionGaussian;
 
-public class Idle extends Task implements GameTickListener {
+public class Idle extends Task {
     private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000) {
 
         @Override
         public boolean condition() {
-            return !hasAnimatedRecently || dialogues.isPendingContinuation();
+            return !GameTickUtil.globalRef.inventoryHasChangedRecently.get() || dialogues.isPendingContinuation();
         }
     };
 
     public Idle(Bot bot) {
         super(bot);
-        bot.addGameTickListener(this);
     }
 
     @Override
     public boolean shouldRun() {
-        return myPlayer().isAnimating() || hasAnimatedRecently;
+        return myPlayer().isAnimating()
+                || GameTickUtil.globalRef.hasAnimatedRecently
+                || GameTickUtil.globalRef.inventoryHasChangedRecently.get();
     }
 
     @Override

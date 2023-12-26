@@ -92,7 +92,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
             ScriptPaint.setStatus("setting withdraw X -> 14");
             if (methods.inventory.isEmpty() || methods.bank.depositAll()) {
                 if (!methods.bank.containsAll(itemA.getId(), itemB.getId())) {
-                    methods.warn("Stopping script due to shortage of items.");
+                    methods.warn("shortage of consumable items.");
                     methods.bot.getScriptExecutor().stop(false);
                 } else {
                     boolean itemA_withdrawn = methods.bank.withdraw(itemA.getId(), 14);
@@ -153,7 +153,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_14_14_Restock() throws InterruptedException {
         if (methods.bank.open() && methods.bank.depositAll()) {
-            if (!methods.bank.containsAll(itemA.getId(), itemB.getId())) {
+            if (methods.bank.getAmount(itemA.getId()) < 14 || methods.bank.getAmount(itemB.getId()) < 14) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(true);
             } else {
@@ -165,7 +165,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_1_27_Restock() throws InterruptedException {
         if (methods.bank.open()) {
-            if (!methods.bank.contains(itemB.getId())) {
+            if (methods.bank.getAmount(itemB.getId()) < 27) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {
@@ -177,7 +177,7 @@ public class DoWhile_BankRestock extends ConditionalLoop {
 
     private boolean handle_1_X_26_Restock() throws InterruptedException {
         if (methods.bank.open()) {
-            if (!methods.bank.contains(itemB.getId())) {
+            if (methods.bank.getAmount(itemB.getId()) < 26) {
                 methods.log("Shortage of items.");
                 methods.bot.getScriptExecutor().stop(false);
             } else {

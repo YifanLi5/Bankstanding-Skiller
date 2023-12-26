@@ -2,6 +2,7 @@ package Task;
 
 import Paint.ScriptPaint;
 import Util.GUI;
+import Util.GameTickUtil;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.RS2Widget;
@@ -16,6 +17,8 @@ import java.util.List;
 import static Util.ScriptConstants.*;
 
 public class CombineItems extends Task {
+
+    private static final String[] CREATE_VERBS = {"Make", "String", "Cut"};
 
     public CombineItems(Bot bot) {
         super(bot);
@@ -83,7 +86,7 @@ public class CombineItems extends Task {
     private boolean spacebarMakeWidget() throws InterruptedException {
         boolean foundWidget = ConditionalSleep2.sleep(1500, () -> {
             // Actions may not be inclusive of every "Create" style verb. So put more here as needed.
-            List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, "Make", "String"));
+            List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, CREATE_VERBS));
             return !widgets.isEmpty();
         });
         if (!foundWidget) {
@@ -94,7 +97,8 @@ public class CombineItems extends Task {
         // set the correct spacebar make option based on script startup param.
         // config 2673 determines which make option is currently bound to spacebar.
         boolean result;
-        if (GUI.userInput != -1 && !configs.isSet(2673, GUI.userInput - 1)) {
+
+        if (GUI.userInput > 0 && !configs.isSet(2673, GUI.userInput - 1)) {
             char keyToType = (char) ('0' + GUI.userInput);
             String status = "Setting ingame make option -> " + keyToType;
             ScriptPaint.setStatus(status);
@@ -103,18 +107,24 @@ public class CombineItems extends Task {
             result = keyboard.typeContinualKey(keyToType, new Condition() {
                 @Override
                 public boolean evaluate() {
-                    return myPlayer().isAnimating();
+                    return ConditionalSleep2.sleep(2000, () -> {
+                        List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, CREATE_VERBS));
+                        return widgets.isEmpty();
+                    });
                 }
             });
         } else {
             sleep(randomGaussian(300, 100));
             keyboard.pressKey(KeyEvent.VK_SPACE);
             ScriptPaint.setStatus("Spacebar-ing make widget");
-            result = ConditionalSleep2.sleep(1500, () -> myPlayer().isAnimating());
+            result = ConditionalSleep2.sleep(2000, () -> {
+                List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, CREATE_VERBS));
+                return widgets.isEmpty();
+            });
             sleep(randomGaussian(300, 100));
             keyboard.releaseKey(KeyEvent.VK_SPACE);
         }
-        return result;
+        return result && ConditionalSleep2.sleep(3000, () -> GameTickUtil.globalRef.inventoryHasChangedRecently.get());
     }
 
     class DoWhile_CombineItems extends ConditionalLoop {
