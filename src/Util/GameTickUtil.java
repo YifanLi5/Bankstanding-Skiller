@@ -65,7 +65,6 @@ public class GameTickUtil extends MethodProvider implements GameTickListener {
         if (inventoryChangeCapacitor <= 0) {
             inventoryHasChangedRecently.set(false);
             lastItemBCount = (int) inventory.getAmount(itemB.getId());
-            ;
         }
     }
 }

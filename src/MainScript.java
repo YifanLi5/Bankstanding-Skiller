@@ -67,6 +67,7 @@ public class MainScript extends Script {
     public void onStop() throws InterruptedException {
         super.onStop();
         clearSubclassInstances();
+        GameTickUtil.globalRef.removeListener();
         painter.deconstructPainter();
     }
 
