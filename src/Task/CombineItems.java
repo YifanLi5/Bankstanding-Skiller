@@ -1,6 +1,7 @@
 package Task;
 
 import Paint.ScriptPaint;
+import Util.GUI;
 import Util.StartUpUtil;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.model.Item;
@@ -101,8 +102,8 @@ public class CombineItems extends Task {
         // set the correct spacebar make option based on script startup param.
         // config 2673 determines which make option is currently bound to spacebar.
         boolean result;
-        if(StartUpUtil.spacebarMakeOptionParam != -1 && !configs.isSet(2673, StartUpUtil.spacebarMakeOptionParam-1)) {
-            char keyToType = (char) ('0' + StartUpUtil.spacebarMakeOptionParam);
+        if(GUI.userInput != -1 && !configs.isSet(2673, GUI.userInput-1)) {
+            char keyToType = (char) ('0' + GUI.userInput);
             String status = "Setting ingame make option -> " + keyToType;
             ScriptPaint.setStatus(status);
             log(status);

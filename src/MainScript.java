@@ -1,17 +1,14 @@
 import Paint.ScriptPaint;
-import Task.BankRestock;
-import Task.CombineItems;
-import Task.Idle;
-import Task.Task;
 import Util.GUI;
+import Util.StartUpUtil;
 import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
+import Task.*;
 import static Task.Task.clearSubclassInstances;
-import static Util.StartUpUtil.*;
 
-@ScriptManifest(author = "yfoo", name = "(gui) Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 0.9, logo = "https://i.imgur.com/un9b95T.png")
+@ScriptManifest(author = "yfoo", name = "Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
 public class MainScript extends Script {
     // Todo: Add CLI support
     private static final int FAILSAFE_LIMIT = 5;
@@ -21,12 +18,13 @@ public class MainScript extends Script {
     private static int nothingInterestingHappensCount = 0;
     private ScriptPaint painter;
 
+    public static int makeWidgetHotkey = -1;
+
     @Override
     public void onStart() throws InterruptedException {
-        //Todo: move items into appropriate inv slots...
-        parseScriptArg(this);
-        handleRecipeConfiguration(this.bot.getMethods());
-        GUI gui = new GUI();
+        StartUpUtil.handleRecipeConfiguration(this);
+        GUI.startAndAwaitInput();
+        log("User Input: " + GUI.userInput);
         painter = new ScriptPaint(this);
 
         new CombineItems(bot);
