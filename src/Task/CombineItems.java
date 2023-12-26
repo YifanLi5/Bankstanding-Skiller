@@ -2,7 +2,6 @@ package Task;
 
 import Paint.ScriptPaint;
 import Util.GUI;
-import Util.StartUpUtil;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.RS2Widget;
@@ -13,8 +12,6 @@ import org.osbot.rs07.utility.ConditionalSleep2;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static Util.ScriptConstants.*;
 
@@ -83,15 +80,10 @@ public class CombineItems extends Task {
     }
 
 
-
     private boolean spacebarMakeWidget() throws InterruptedException {
-        final RS2Widget[] selectOptionWidget = new RS2Widget[1];
         boolean foundWidget = ConditionalSleep2.sleep(1500, () -> {
             // Actions may not be inclusive of every "Create" style verb. So put more here as needed.
             List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, "Make", "String"));
-            if(!widgets.isEmpty()) {
-                selectOptionWidget[0] = widgets.get(0);
-            }
             return !widgets.isEmpty();
         });
         if (!foundWidget) {
@@ -102,7 +94,7 @@ public class CombineItems extends Task {
         // set the correct spacebar make option based on script startup param.
         // config 2673 determines which make option is currently bound to spacebar.
         boolean result;
-        if(GUI.userInput != -1 && !configs.isSet(2673, GUI.userInput-1)) {
+        if (GUI.userInput != -1 && !configs.isSet(2673, GUI.userInput - 1)) {
             char keyToType = (char) ('0' + GUI.userInput);
             String status = "Setting ingame make option -> " + keyToType;
             ScriptPaint.setStatus(status);

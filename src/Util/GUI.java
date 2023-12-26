@@ -6,10 +6,10 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
 public class GUI {
-    private final JDialog mainDialog;
-    private boolean submitted;
     public static int userInput = -1;
     private static GUI guiInstance;
+    private final JDialog mainDialog;
+    private boolean submitted;
 
     public GUI() {
         mainDialog = new JDialog();
@@ -47,7 +47,7 @@ public class GUI {
         submitBtn.addActionListener(e -> {
             try {
                 String text = textField.getText();
-                if(text == null || text.isEmpty()) {
+                if (text == null || text.isEmpty()) {
                     userInput = -1;
                 } else {
                     userInput = Integer.parseInt(textField.getText());
@@ -64,7 +64,6 @@ public class GUI {
     }
 
 
-
     public static void startAndAwaitInput() {
         try {
             SwingUtilities.invokeAndWait(() -> {
@@ -74,7 +73,7 @@ public class GUI {
         } catch (InterruptedException | InvocationTargetException e) {
             userInput = -1;
         }
-        if(!guiInstance.submitted) {
+        if (!guiInstance.submitted) {
             userInput = -1;
         }
     }

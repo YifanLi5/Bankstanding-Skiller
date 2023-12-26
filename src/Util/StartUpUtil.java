@@ -1,13 +1,11 @@
 package Util;
 
 import org.osbot.rs07.api.model.Item;
-import org.osbot.rs07.script.MethodProvider;
 import org.osbot.rs07.script.Script;
 
 import java.util.HashMap;
 
 import static Util.ScriptConstants.*;
-import static Util.ScriptConstants.itemC;
 
 public class StartUpUtil {
 
