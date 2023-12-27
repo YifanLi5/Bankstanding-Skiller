@@ -2,21 +2,20 @@ package Task;
 
 import Paint.ScriptPaint;
 import Util.DoWhile_BankRestock;
+import Util.GameTickUtil;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.model.Item;
-import org.osbot.rs07.listener.GameTickListener;
 
 import static Util.ScriptConstants.*;
 
 //Used for 1_27 or 14_14
-public class BankRestock extends Task implements GameTickListener {
+public class BankRestock extends Task {
 
     private final Filter<Item> outputItemFilter = item -> item.getId() != itemA.getId() && item.getId() != itemB.getId() && item.getId() != getItemC_Id();
 
     public BankRestock(Bot bot) {
         super(bot);
-        bot.addGameTickListener(this);
     }
 
     @Override
@@ -35,7 +34,7 @@ public class BankRestock extends Task implements GameTickListener {
                         && inventory.contains(itemC.getId());
         }
 
-        return !hasAnimatedRecently && !inventoryMatchesRestockedState;
+        return !GameTickUtil.globalRef.hasAnimatedRecently && !GameTickUtil.globalRef.inventoryHasChangedRecently.get() && !inventoryMatchesRestockedState;
     }
 
     @Override

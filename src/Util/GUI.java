@@ -46,17 +46,23 @@ public class GUI {
 
         submitBtn.addActionListener(e -> {
             try {
+                submitted = true;
                 String text = textField.getText();
+                System.out.print(text);
                 if (text == null || text.isEmpty()) {
-                    userInput = -1;
+                    userInput = 0;
                 } else {
                     userInput = Integer.parseInt(textField.getText());
-                    submitted = true;
-                    mainDialog.setVisible(false);
-                    mainDialog.dispose();
+                    if (userInput < 1 || userInput > 9) {
+                        throw new NumberFormatException();
+                    }
                 }
+
+                mainDialog.setVisible(false);
+                mainDialog.dispose();
             } catch (NumberFormatException nfe) {
                 errorLabel.setVisible(true);
+                submitted = false;
             }
         });
 
@@ -74,7 +80,7 @@ public class GUI {
             userInput = -1;
         }
         if (!guiInstance.submitted) {
-            userInput = -1;
+            userInput = -2;
         }
     }
 }

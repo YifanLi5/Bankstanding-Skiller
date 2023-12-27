@@ -10,6 +10,10 @@ import static Util.ScriptConstants.*;
 public class StartUpUtil {
 
     public static void handleRecipeConfiguration(Script script) throws InterruptedException {
+        itemA = null;
+        itemB = null;
+        itemC = null;
+
         Item[] inventoryItems = script.inventory.getItems();
         HashMap<Integer, Item> intItemMapping = new HashMap<>();
         for (Item item : inventoryItems) {

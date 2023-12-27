@@ -4,6 +4,7 @@ import Task.CombineItems;
 import Task.Idle;
 import Task.Task;
 import Util.GUI;
+import Util.GameTickUtil;
 import Util.StartUpUtil;
 import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.script.Script;
@@ -13,7 +14,6 @@ import static Task.Task.clearSubclassInstances;
 
 @ScriptManifest(author = "yfoo", name = "Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
 public class MainScript extends Script {
-    // Todo: Add CLI support
     private static final int FAILSAFE_LIMIT = 5;
     //N_I_H == Nothing interesting happened
     private static final int N_I_H_LIMIT = 5;
@@ -24,7 +24,14 @@ public class MainScript extends Script {
     @Override
     public void onStart() throws InterruptedException {
         StartUpUtil.handleRecipeConfiguration(this);
+        GameTickUtil.createSingletonGlobalInstance(this.bot);
         GUI.startAndAwaitInput();
+        if (GUI.userInput < 0) {
+            warn("Stopping script, GUI was closed.");
+            stop(false);
+
+        }
+
         log("User Input: " + GUI.userInput);
         painter = new ScriptPaint(this);
 
@@ -39,7 +46,7 @@ public class MainScript extends Script {
         if (nextTask != null) {
             noNextTaskCount = 0;
             if (nextTask instanceof Idle && nothingInterestingHappensCount > 0) {
-                log("resetting nothingInterestingHappensCount -> 0 due to going into item processing animation");
+                log("resetting nothingInterestingHappensCount -> 0");
                 nothingInterestingHappensCount = 0;
             }
             nextTask.runTask();
@@ -59,6 +66,7 @@ public class MainScript extends Script {
     public void onStop() throws InterruptedException {
         super.onStop();
         clearSubclassInstances();
+        GameTickUtil.globalRef.removeListener();
         painter.deconstructPainter();
     }
 
