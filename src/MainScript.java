@@ -12,9 +12,8 @@ import org.osbot.rs07.script.ScriptManifest;
 
 import static Task.Task.clearSubclassInstances;
 
-@ScriptManifest(author = "yfoo", name = "(debug1) Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
+@ScriptManifest(author = "yfoo", name = "Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
 public class MainScript extends Script {
-    // Todo: Pineapple pizzas don't have an animation...
     private static final int FAILSAFE_LIMIT = 5;
     //N_I_H == Nothing interesting happened
     private static final int N_I_H_LIMIT = 5;
@@ -47,7 +46,7 @@ public class MainScript extends Script {
         if (nextTask != null) {
             noNextTaskCount = 0;
             if (nextTask instanceof Idle && nothingInterestingHappensCount > 0) {
-                log("resetting nothingInterestingHappensCount -> 0 due to going into item processing animation");
+                log("resetting nothingInterestingHappensCount -> 0");
                 nothingInterestingHappensCount = 0;
             }
             nextTask.runTask();
