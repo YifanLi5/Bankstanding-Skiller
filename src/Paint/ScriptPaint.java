@@ -49,8 +49,8 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         ScriptPaint.status = status;
     }
 
-    public static void incrementNumItemsProcessed(int increment) {
-        numItemsProcessed += increment;
+    public static void setNumItemsProcessed(int numItemsProcessed) {
+        ScriptPaint.numItemsProcessed = numItemsProcessed;
     }
 
     @Override

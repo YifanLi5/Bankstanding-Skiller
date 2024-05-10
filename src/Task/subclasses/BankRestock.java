@@ -12,36 +12,33 @@ import static Util.ScriptConstants.*;
 
 public class BankRestock extends CircularLLTask {
 
-    private final Filter<Item> outputItemFilter = item -> item.getId() != itemA.getId() && item.getId() != itemB.getId() && item.getId() != getItemC_Id();
-
     public BankRestock(Bot bot) {
         super(bot);
     }
 
     @Override
     public boolean shouldRun() {
-        boolean inventoryMatchesRestockedState = false;
+        boolean shouldRestock = false;
         switch (combinationType) {
             case _1_27:
-                inventoryMatchesRestockedState = inventory.getAmount(itemA.getId()) == 1 && inventory.getAmount(itemB.getId()) == 27;
-                break;
-            case _14_14:
-                inventoryMatchesRestockedState = inventory.getAmount(itemA.getId()) == 14 && inventory.getAmount(itemB.getId()) == 14;
+                shouldRestock = !inventory.contains(itemB.getId());
                 break;
             case _1_X_26:
-                inventoryMatchesRestockedState = inventory.getAmount(itemA.getId()) == 1
-                        && inventory.getAmount(itemB.getId()) == 26
-                        && inventory.contains(itemC.getId());
+                shouldRestock = inventory.getAmount(itemB.getId()) < 26;
+                break;
+            case _14_14:
+                shouldRestock = !inventory.containsAll(itemA.getId(), itemB.getId());
+                break;
+
         }
 
-        return !inventoryMatchesRestockedState;
+        return shouldRestock;
     }
 
     @Override
     public void runTask() throws InterruptedException {
         log("Running: " + this.getClass().getSimpleName());
         ScriptPaint.setStatus(String.format("Bank restock (%s)", combinationType));
-        ScriptPaint.incrementNumItemsProcessed((int) inventory.getAmount(outputItemFilter));
         if(!RetryUtil.retry(() -> bank.isOpen() || bank.open(), 3, 1000)) {
             stopScriptNow("Unable to open the bank");
             return;
@@ -57,11 +54,17 @@ public class BankRestock extends CircularLLTask {
                     stopScriptNow("Shortage of " + itemB.getName());
                     return;
                 }
-                if(!RetryUtil.retry(() -> bank.depositAllExcept(itemA.getId(), itemC.getId()) && bank.withdrawAll(itemB.getId()), 3, 1000)) {
-                    stopScriptNow(String.format("Unable to deposit all %s and fill inventory with %s", itemA.getName(), itemB.getName()));
+                if(!inventory.contains(getItemC_Id()) || !inventory.contains(itemA.getId())) {
+                    stopScriptNow(String.format("Shortage of %s or %s", itemA.getName(), itemC.getName()));
+                    return;
+                }
+                if(!RetryUtil.retry(() -> bank.depositAllExcept(itemA.getId(), itemB.getId(), itemC.getId()) && bank.withdrawAll(itemB.getId()), 3, 1000)) {
+                    stopScriptNow(String.format("Unable to deposit all processed items and fill inventory with %s", itemB.getName()));
+                    return;
                 }
                 if(!bank.close()) {
                     stopScriptNow("Unable to close the bank.");
+                    return;
                 }
                 break;
             case _1_27:
@@ -87,6 +90,10 @@ public class BankRestock extends CircularLLTask {
                     stopScriptNow("Unable to set banking quantity widget to " + BankingUtil.BankingQuantityWidgetOptions.X);
                     return;
                 }
+                if(!bank.depositAll()) {
+                    stopScriptNow("Unable to deposit all items");
+                    return;
+                }
                 if(bank.getAmount(itemA.getId()) < 14 || bank.getAmount(itemB.getId()) < 14) {
                     stopScriptNow(String.format("Shortage of either %s or %s", itemA.getName(), itemB.getName()));
                     return;
@@ -95,7 +102,6 @@ public class BankRestock extends CircularLLTask {
                 boolean itemB_withdrawn = RetryUtil.retry(() -> bank.withdraw(itemB.getId(), 14), 3, 1500);
                 if(!itemA_withdrawn || !itemB_withdrawn) {
                     stopScriptNow(String.format("Unable to withdraw 14 of either %s or %s", itemA.getName(), itemB.getName()));
-                    return;
                 }
                 if(!bank.close()) {
                     stopScriptNow("Unable to close the bank.");

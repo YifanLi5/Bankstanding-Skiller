@@ -30,10 +30,10 @@ public class CombineItems extends CircularLLTask {
         switch (combinationType) {
             case _14_14:
             case _1_27:
-                shouldRun = inventory.containsAll(itemA.getId(), itemB.getId()) && (inventory.onlyContains(itemA.getId(), itemB.getId()) || dialogues.isPendingContinuation());
+                shouldRun = inventory.containsAll(itemA.getId(), itemB.getId());
                 break;
             case _1_X_26:
-                shouldRun = inventory.containsAll(itemA.getId(), itemB.getId(), getItemC_Id()) && (inventory.onlyContains(itemA.getId(), itemB.getId(), getItemC_Id()) || dialogues.isPendingContinuation());
+                shouldRun = inventory.containsAll(itemA.getId(), itemB.getId(), getItemC_Id());
                 break;
         }
         return shouldRun;
@@ -81,7 +81,6 @@ public class CombineItems extends CircularLLTask {
 
     private boolean spacebarMakeWidget() throws InterruptedException {
         boolean foundWidget = ConditionalSleep2.sleep(1500, () -> {
-            // Actions may not be inclusive of every "Create" style verb. So put more here as needed.
             List<RS2Widget> widgets = new ArrayList<>(getWidgets().containingActions(270, CREATE_VERBS));
             return !widgets.isEmpty();
         });

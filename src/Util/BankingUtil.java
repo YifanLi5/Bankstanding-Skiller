@@ -11,7 +11,7 @@ public class BankingUtil {
     private static final int X_AMOUNT_CONFIG_ID = 304;
     private static final int X_AMOUNT_CONFIG_VALUE_14 = 28;
     public enum BankingQuantityWidgetOptions {
-        ONE(0), FIVE(5), X(140), ALL(16);
+        ONE(0), FIVE(4), TEN(8), X(12), ALL(16);
 
         final int configValue;
         BankingQuantityWidgetOptions(int configValue) {
@@ -35,6 +35,9 @@ public class BankingUtil {
                 break;
             case FIVE:
                 bankQuantityWidget = methods.widgets.getWidgetContainingText(BANK_ROOT_ID, "5");
+                break;
+            case TEN:
+                bankQuantityWidget = methods.widgets.getWidgetContainingText(BANK_ROOT_ID, "10");
                 break;
             case X:
                 bankQuantityWidget = methods.widgets.getWidgetContainingText(BANK_ROOT_ID, "X");

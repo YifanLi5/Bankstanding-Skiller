@@ -47,6 +47,9 @@ public abstract class CircularLLTask extends MethodProvider {
     }
 
     public static void clearSubclassInstances() {
+        for(CircularLLTask task: subclassInstances) {
+            task.cleanup();
+        }
         subclassInstances.clear();
     }
 
@@ -57,4 +60,6 @@ public abstract class CircularLLTask extends MethodProvider {
     public static boolean isStopScriptNow() {
         return stopScriptNow;
     }
+
+    protected void cleanup(){}
 }
