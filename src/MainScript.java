@@ -1,18 +1,19 @@
 import Paint.ScriptPaint;
-import Task.BankRestock;
-import Task.CombineItems;
-import Task.Idle;
-import Task.Task;
+import Task.subclasses.BankRestock;
+import Task.subclasses.CombineItems;
+import Task.subclasses.Idle;
+import Task.CircularLLTask;
 import Util.GUI;
 import Util.GameTickUtil;
+import Util.RngUtil;
 import Util.StartUpUtil;
 import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
-import static Task.Task.clearSubclassInstances;
+import static Task.CircularLLTask.clearSubclassInstances;
 
-@ScriptManifest(author = "yfoo", name = "Item Combiner v2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
+@ScriptManifest(author = "yfoo", name = "Bankstanding Skiller 0", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
 public class MainScript extends Script {
     private static final int FAILSAFE_LIMIT = 5;
     //N_I_H == Nothing interesting happened
@@ -36,30 +37,22 @@ public class MainScript extends Script {
         painter = new ScriptPaint(this);
 
         new CombineItems(bot);
-        new BankRestock(bot);
         new Idle(bot);
+        new BankRestock(bot);
     }
 
     @Override
     public int onLoop() throws InterruptedException {
-        Task nextTask = Task.pollNextTask();
-        if (nextTask != null) {
-            noNextTaskCount = 0;
-            if (nextTask instanceof Idle && nothingInterestingHappensCount > 0) {
-                log("resetting nothingInterestingHappensCount -> 0");
-                nothingInterestingHappensCount = 0;
-            }
-            nextTask.runTask();
-        } else {
-            if (noNextTaskCount >= FAILSAFE_LIMIT) {
-                warn("Hit noNextTaskCount's FAILSAFE_LIMIT: " + FAILSAFE_LIMIT);
-                stop(false);
-            }
-            noNextTaskCount += 1;
-            warn(String.format("No next task... (%d/%d)", noNextTaskCount, FAILSAFE_LIMIT));
-            return 2500;
+        if(CircularLLTask.isStopScriptNow()) {
+            stop(false);
+            return 5000;
         }
-        return random(500, 1000);
+
+        CircularLLTask nextTask = CircularLLTask.nextTask();
+        if(nextTask != null) {
+            nextTask.runTask();
+        }
+        return RngUtil.gaussian(250, 50, 0, 350);
     }
 
     @Override

@@ -1,8 +1,8 @@
-package Task;
+package Task.subclasses;
 
 import Paint.ScriptPaint;
+import Task.CircularLLTask;
 import Util.GUI;
-import Util.GameTickUtil;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.RS2Widget;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import static Util.ScriptConstants.*;
 
-public class CombineItems extends Task {
+public class CombineItems extends CircularLLTask {
 
     private static final String[] CREATE_VERBS = {"Make", "String", "Cut"};
 
@@ -35,8 +35,6 @@ public class CombineItems extends Task {
             case _1_X_26:
                 shouldRun = inventory.containsAll(itemA.getId(), itemB.getId(), getItemC_Id()) && (inventory.onlyContains(itemA.getId(), itemB.getId(), getItemC_Id()) || dialogues.isPendingContinuation());
                 break;
-            default:
-                warn("recognized Enum shouldRun :: CombineItems");
         }
         return shouldRun;
     }
@@ -44,8 +42,6 @@ public class CombineItems extends Task {
     @Override
     public void runTask() throws InterruptedException {
         log("Running: " + this.getClass().getSimpleName());
-        ConditionalSleep2.sleep(1000, () -> !bank.isOpen() || bank.close());
-        ConditionalSleep2.sleep(1000, () -> !inventory.isItemSelected() || inventory.deselectItem());
         DoWhile_CombineItems combineItems = new DoWhile_CombineItems(bot, 3);
         combineItems.start();
         if (!combineItems.getResult()) {
@@ -124,7 +120,7 @@ public class CombineItems extends Task {
             sleep(randomGaussian(300, 100));
             keyboard.releaseKey(KeyEvent.VK_SPACE);
         }
-        return result && ConditionalSleep2.sleep(3000, () -> GameTickUtil.globalRef.inventoryHasChangedRecently.get());
+        return result;
     }
 
     class DoWhile_CombineItems extends ConditionalLoop {

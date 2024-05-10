@@ -14,10 +14,10 @@ import static Util.ScriptConstants.*;
 public class DoWhile_BankRestock extends ConditionalLoop {
     final int BANK_ROOT_ID = 12;
     final int ID_OF_VARBIT_HANDLING_WITHDRAW_QUANTITY_SELECTED = 1666;
-    final int _1666_VARBIT_VALUE_IF_WITHDRAW_X_SELECTED = 0b1100;
+    final int _1666_VARBIT_VALUE_IF_WITHDRAW_X_SELECTED = 140;
     final int ID_OF_VARBIT_HANDLING_WITHDRAW_X_AMOUNT = 304;
     final int _304_WITHDRAW_X_AMOUNT_OF_14 = 0b11100;
-    final int _1666_VARBIT_VALUE_IF_WITHDRAW_ALL_SELECTED = 0b10000;
+    final int _1666_VARBIT_VALUE_IF_WITHDRAW_ALL_SELECTED = 144;
 
     MethodProvider methods;
 
@@ -41,6 +41,9 @@ public class DoWhile_BankRestock extends ConditionalLoop {
                             ID_OF_VARBIT_HANDLING_WITHDRAW_QUANTITY_SELECTED,
                             _1666_VARBIT_VALUE_IF_WITHDRAW_X_SELECTED
                     );
+
+                    methods.log("fixWithdrawXAmount: " + fixWithdrawXAmount);
+                    methods.log("toggleWithdrawXWidget: " + toggleWithdrawXWidget);
 
                     loopAgain = fixWithdrawXAmount || toggleWithdrawXWidget ? !turnOnWithdrawXFor_14_14_Restock() : !handle_14_14_Restock();
                     break;
