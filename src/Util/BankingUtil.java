@@ -10,26 +10,19 @@ public class BankingUtil {
     private static final int SELECTED_BANK_QUANTITY_WIDGET_ID = 1666;
     private static final int X_AMOUNT_CONFIG_ID = 304;
     private static final int X_AMOUNT_CONFIG_VALUE_14 = 28;
-    public enum BankingQuantityWidgetOptions {
-        ONE(0), FIVE(4), TEN(8), X(12), ALL(16);
 
-        final int configValue;
-        BankingQuantityWidgetOptions(int configValue) {
-            this.configValue = configValue;
-        }
-    }
     public static boolean setBankingQuantityOption(MethodProvider methods, BankingQuantityWidgetOptions bankingWidgetOption) throws InterruptedException {
-        if(!methods.bank.isOpen()) {
+        if (!methods.bank.isOpen()) {
             methods.warn("bank is not open");
             return false;
         }
         boolean result = methods.configs.isSet(SELECTED_BANK_QUANTITY_WIDGET_ID, bankingWidgetOption.configValue);
-        if(result) {
+        if (result) {
             return true;
         }
 
         RS2Widget bankQuantityWidget = null;
-        switch(bankingWidgetOption) {
+        switch (bankingWidgetOption) {
             case ONE:
                 bankQuantityWidget = methods.widgets.getWidgetContainingText(BANK_ROOT_ID, "1");
                 break;
@@ -55,6 +48,16 @@ public class BankingUtil {
         WidgetDestination widgetDestination = new WidgetDestination(methods.bot, bankQuantityWidget);
         return RetryUtil.retry(() -> methods.mouse.click(widgetDestination), 3, 1000)
                 && RetryUtil.retry(() -> methods.configs.isSet(SELECTED_BANK_QUANTITY_WIDGET_ID, bankingWidgetOption.configValue), 5, 1000);
+    }
+
+    public enum BankingQuantityWidgetOptions {
+        ONE(0), FIVE(4), TEN(8), X(12), ALL(16);
+
+        final int configValue;
+
+        BankingQuantityWidgetOptions(int configValue) {
+            this.configValue = configValue;
+        }
     }
 
 }

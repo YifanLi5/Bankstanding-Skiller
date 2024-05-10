@@ -1,11 +1,10 @@
 import Paint.ScriptPaint;
+import Task.CircularLLTask;
 import Task.subclasses.BankRestock;
 import Task.subclasses.CombineItems;
 import Task.subclasses.Idle;
-import Task.CircularLLTask;
 import Util.GUI;
 import Util.StartUpUtil;
-import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
@@ -36,13 +35,13 @@ public class MainScript extends Script {
 
     @Override
     public int onLoop() throws InterruptedException {
-        if(CircularLLTask.isStopScriptNow()) {
+        if (CircularLLTask.isStopScriptNow()) {
             stop(false);
             return 5000;
         }
 
         CircularLLTask nextTask = CircularLLTask.nextTask();
-        if(nextTask != null) {
+        if (nextTask != null) {
             nextTask.runTask();
         }
         return 0;

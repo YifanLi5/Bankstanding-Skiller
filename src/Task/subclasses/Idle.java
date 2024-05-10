@@ -18,28 +18,9 @@ import static Util.ScriptConstants.*;
 public class Idle extends CircularLLTask {
     private final Filter<Item> outputItemFilter = item ->
             item.getId() != itemA.getId() &&
-            item.getId() != itemB.getId() &&
-            item.getId() != getItemC_Id();
-
-
-    private final class AnimationWatcher implements Runnable {
-        private long lastAnimTime = 0;
-
-        @Override
-        public void run() {
-            if(myPlayer().isAnimating() || lastAnimTime == 0)
-                lastAnimTime = System.currentTimeMillis();
-        }
-
-        public boolean hasPlayerBeenIdling() {
-            if(lastAnimTime != 0)
-                return System.currentTimeMillis() - lastAnimTime > 3000;
-            return false;
-        }
-    }
-
+                    item.getId() != itemB.getId() &&
+                    item.getId() != getItemC_Id();
     private AnimationWatcher animationWatcher = null;
-
     private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000) {
         @Override
         public boolean condition() {
@@ -59,14 +40,13 @@ public class Idle extends CircularLLTask {
             return result;
         }
     };
-
     private ScheduledExecutorService scheduler;
 
     public Idle(Bot bot) {
         super(bot);
         InventoryWatcher.startWatcher(bot.getMethods());
         scheduler = Executors.newScheduledThreadPool(3);
-        if(combinationType == CombinationType._1_X_26) {
+        if (combinationType == CombinationType._1_X_26) {
             animationWatcher = new AnimationWatcher();
             scheduler.scheduleWithFixedDelay(animationWatcher, 0, 500, TimeUnit.MILLISECONDS);
         }
@@ -107,7 +87,23 @@ public class Idle extends CircularLLTask {
     protected void cleanup() {
         super.cleanup();
         InventoryWatcher.shutdownWatcher();
-        if(scheduler != null)
+        if (scheduler != null)
             scheduler.shutdown();
+    }
+
+    private final class AnimationWatcher implements Runnable {
+        private long lastAnimTime = 0;
+
+        @Override
+        public void run() {
+            if (myPlayer().isAnimating() || lastAnimTime == 0)
+                lastAnimTime = System.currentTimeMillis();
+        }
+
+        public boolean hasPlayerBeenIdling() {
+            if (lastAnimTime != 0)
+                return System.currentTimeMillis() - lastAnimTime > 3000;
+            return false;
+        }
     }
 }
