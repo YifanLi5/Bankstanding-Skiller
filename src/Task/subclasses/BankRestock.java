@@ -5,6 +5,12 @@ import Task.CircularLLTask;
 import Util.BankingUtil;
 import Util.RetryUtil;
 import org.osbot.rs07.Bot;
+import org.osbot.rs07.api.filter.Filter;
+import org.osbot.rs07.api.model.Item;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static Util.ScriptConstants.*;
 
@@ -74,10 +80,20 @@ public class BankRestock extends CircularLLTask {
                     stopScriptNow("Shortage of " + itemB.getName());
                     return;
                 }
-                if (!RetryUtil.retry(() -> bank.depositAllExcept(itemA.getId()) && bank.withdrawAll(itemB.getId()), 3, 1000)) {
-                    stopScriptNow(String.format("Unable to deposit all %s and fill inventory with %s", itemA.getName(), itemB.getName()));
+
+                // Some _1_27s such as chisel + amethyst make a stackable item.
+                // Prevent that stackable item from being banked.
+                Item stackableItem = inventory.getItem(item -> item.getAmount() > 1);
+                int[] depositExcept = stackableItem != null ?
+                        new int[]{itemA.getId(), stackableItem.getId()} :
+                        new int[]{itemA.getId()};
+
+                if (!RetryUtil.retry(() -> bank.depositAllExcept(depositExcept) && bank.withdrawAll(itemB.getId()), 3, 1000)) {
+                    stopScriptNow(String.format("Unable to deposit processed items and fill inventory with %s", itemB.getName()));
                     return;
                 }
+
+
                 if (!bank.close()) {
                     stopScriptNow("Unable to close the bank.");
                     return;

@@ -14,7 +14,7 @@ public class RetryUtil {
             } catch (Exception ignored) {
             }
             attempts++;
-            MethodProvider.sleep(1200);
+            MethodProvider.sleep(retryWaitTime);
         }
         return isSuccess;
     }

@@ -16,10 +16,6 @@ import java.util.concurrent.TimeUnit;
 import static Util.ScriptConstants.*;
 
 public class Idle extends CircularLLTask {
-    private final Filter<Item> outputItemFilter = item ->
-            item.getId() != itemA.getId() &&
-                    item.getId() != itemB.getId() &&
-                    item.getId() != getItemC_Id();
     private AnimationWatcher animationWatcher = null;
     private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000) {
         @Override
