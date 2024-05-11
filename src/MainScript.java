@@ -10,7 +10,7 @@ import org.osbot.rs07.script.ScriptManifest;
 
 import static Task.CircularLLTask.clearSubclassInstances;
 
-@ScriptManifest(author = "yfoo", name = "Bankstanding Skiller 1", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
+@ScriptManifest(author = "yfoo", name = "Bankstanding Skiller 2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
 public class MainScript extends Script {
 
     private ScriptPaint painter;

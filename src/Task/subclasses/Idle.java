@@ -2,6 +2,7 @@ package Task.subclasses;
 
 import Paint.ScriptPaint;
 import Task.CircularLLTask;
+import Util.AnimationWatcher;
 import Util.InventoryWatcher;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.filter.Filter;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import static Util.ScriptConstants.*;
 
 public class Idle extends CircularLLTask {
-    private AnimationWatcher animationWatcher = null;
+
     private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000) {
         @Override
         public boolean condition() {
@@ -31,7 +32,7 @@ public class Idle extends CircularLLTask {
                     result = (!inventory.contains(itemB.getId()) || !inventory.contains(itemA.getId())) && !myPlayer().isAnimating();
                     break;
                 case _1_X_26:
-                    result = animationWatcher.hasPlayerBeenIdling();
+                    result = AnimationWatcher.hasPlayerBeenIdling();
             }
             return result;
         }
@@ -41,12 +42,7 @@ public class Idle extends CircularLLTask {
     public Idle(Bot bot) {
         super(bot);
         InventoryWatcher.startWatcher(bot.getMethods());
-        scheduler = Executors.newScheduledThreadPool(3);
-        if (combinationType == CombinationType._1_X_26) {
-            animationWatcher = new AnimationWatcher();
-            scheduler.scheduleWithFixedDelay(animationWatcher, 0, 500, TimeUnit.MILLISECONDS);
-        }
-
+        AnimationWatcher.startWatcher(bot.getMethods());
     }
 
     @Override
@@ -83,23 +79,6 @@ public class Idle extends CircularLLTask {
     protected void cleanup() {
         super.cleanup();
         InventoryWatcher.shutdownWatcher();
-        if (scheduler != null)
-            scheduler.shutdown();
-    }
-
-    private final class AnimationWatcher implements Runnable {
-        private long lastAnimTime = 0;
-
-        @Override
-        public void run() {
-            if (myPlayer().isAnimating() || lastAnimTime == 0)
-                lastAnimTime = System.currentTimeMillis();
-        }
-
-        public boolean hasPlayerBeenIdling() {
-            if (lastAnimTime != 0)
-                return System.currentTimeMillis() - lastAnimTime > 3000;
-            return false;
-        }
+        AnimationWatcher.shutdownWatcher();
     }
 }
