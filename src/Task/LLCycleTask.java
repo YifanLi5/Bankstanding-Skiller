@@ -6,23 +6,23 @@ import org.osbot.rs07.script.Script;
 
 import java.util.ArrayList;
 
-public abstract class CircularLLTask extends MethodProvider {
+public abstract class LLCycleTask extends MethodProvider {
     public final static boolean LOGOUT_ON_SCRIPT_STOP = false;
-    private static final ArrayList<CircularLLTask> subclassInstances = new ArrayList<>();
+    private static final ArrayList<LLCycleTask> subclassInstances = new ArrayList<>();
     private static boolean stopScriptNow = false;
     private static int iterCount = 0;
     protected final Script script;
 
-    public CircularLLTask(Bot bot) {
+    public LLCycleTask(Bot bot) {
         exchangeContext(bot);
         subclassInstances.add(this);
         this.script = bot.getScriptExecutor().getCurrent();
         log("Initialized task instance of type: " + this.getClass().getCanonicalName());
     }
 
-    public static CircularLLTask nextTask() throws InterruptedException {
+    public static LLCycleTask nextTask() throws InterruptedException {
         int startIdx = iterCount % subclassInstances.size();
-        CircularLLTask task = null;
+        LLCycleTask task = null;
 
         while (task == null || !task.shouldRun()) {
             if (task != null) {
@@ -41,7 +41,7 @@ public abstract class CircularLLTask extends MethodProvider {
     }
 
     public static void clearSubclassInstances() {
-        for (CircularLLTask task : subclassInstances) {
+        for (LLCycleTask task : subclassInstances) {
             task.cleanup();
         }
         subclassInstances.clear();

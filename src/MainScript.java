@@ -1,5 +1,5 @@
 import Paint.ScriptPaint;
-import Task.CircularLLTask;
+import Task.LLCycleTask;
 import Task.subclasses.BankRestock;
 import Task.subclasses.CombineItems;
 import Task.subclasses.Idle;
@@ -8,9 +8,9 @@ import Util.StartUpUtil;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
-import static Task.CircularLLTask.clearSubclassInstances;
+import static Task.LLCycleTask.clearSubclassInstances;
 
-@ScriptManifest(author = "yfoo", name = "Bankstanding Skiller 2", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://i.imgur.com/un9b95T.png")
+@ScriptManifest(author = "yfoo", name = "Bankstanding Skiller", info = "Does 14-14 || 1-27 || 1-X-26 bankstanding tasks", version = 1.0, logo = "https://github.com/YifanLi5/Bankstanding-Skiller/blob/master/bankstanding_skiller_logo.png?raw=true")
 public class MainScript extends Script {
 
     private ScriptPaint painter;
@@ -35,12 +35,12 @@ public class MainScript extends Script {
 
     @Override
     public int onLoop() throws InterruptedException {
-        if (CircularLLTask.isStopScriptNow()) {
+        if (LLCycleTask.isStopScriptNow()) {
             stop(false);
             return 5000;
         }
 
-        CircularLLTask nextTask = CircularLLTask.nextTask();
+        LLCycleTask nextTask = LLCycleTask.nextTask();
         if (nextTask != null) {
             nextTask.runTask();
         }

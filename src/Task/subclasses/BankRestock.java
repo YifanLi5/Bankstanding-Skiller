@@ -1,20 +1,15 @@
 package Task.subclasses;
 
 import Paint.ScriptPaint;
-import Task.CircularLLTask;
+import Task.LLCycleTask;
 import Util.BankingUtil;
 import Util.RetryUtil;
 import org.osbot.rs07.Bot;
-import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.model.Item;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static Util.ScriptConstants.*;
 
-public class BankRestock extends CircularLLTask {
+public class BankRestock extends LLCycleTask {
 
     public BankRestock(Bot bot) {
         super(bot);

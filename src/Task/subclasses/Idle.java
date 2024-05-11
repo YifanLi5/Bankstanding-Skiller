@@ -1,22 +1,18 @@
 package Task.subclasses;
 
 import Paint.ScriptPaint;
-import Task.CircularLLTask;
+import Task.LLCycleTask;
 import Util.AnimationWatcher;
 import Util.InventoryWatcher;
 import org.osbot.rs07.Bot;
-import org.osbot.rs07.api.filter.Filter;
-import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.utility.ConditionalSleep;
 import org.osbot.rs07.utility.ConditionalSleep2;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import static Util.ScriptConstants.*;
 
-public class Idle extends CircularLLTask {
+public class Idle extends LLCycleTask {
 
     private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000) {
         @Override

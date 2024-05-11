@@ -1,7 +1,7 @@
 package Task.subclasses;
 
 import Paint.ScriptPaint;
-import Task.CircularLLTask;
+import Task.LLCycleTask;
 import Util.GUI;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.model.Item;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import static Util.ScriptConstants.*;
 
-public class CombineItems extends CircularLLTask {
+public class CombineItems extends LLCycleTask {
 
     private static final String[] CREATE_VERBS = {"Make", "String", "Cut"};
 
