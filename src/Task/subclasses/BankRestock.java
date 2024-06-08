@@ -99,7 +99,7 @@ public class BankRestock extends LLCycleTask {
                     stopScriptNow("Unable to set banking quantity widget to " + BankingUtil.BankingQuantityWidgetOptions.X);
                     return;
                 }
-                if (!bank.depositAll()) {
+                if (!RetryUtil.retry(() -> bank.depositAll(), 3, 1000)) {
                     stopScriptNow("Unable to deposit all items");
                     return;
                 }

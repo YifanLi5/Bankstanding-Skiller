@@ -14,7 +14,7 @@ import static Util.ScriptConstants.*;
 
 public class Idle extends LLCycleTask {
 
-    private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(60000, 1000) {
+    private final ConditionalSleep sleepUntilInventoryProcessed = new ConditionalSleep(100000, 1000) {
         @Override
         public boolean condition() {
             if (dialogues.isPendingContinuation()) {

@@ -17,16 +17,16 @@ public class MainScript extends Script {
 
     @Override
     public void onStart() throws InterruptedException {
-        StartUpUtil.handleRecipeConfiguration(this);
+        painter = new ScriptPaint(this);
         GUI.startAndAwaitInput();
         if (GUI.userInput < 0) {
             warn("Stopping script, GUI was closed.");
             stop(false);
 
         }
-
+        StartUpUtil.handleRecipeConfiguration(this);
         log("User Input: " + GUI.userInput);
-        painter = new ScriptPaint(this);
+
 
         new CombineItems(bot);
         new Idle(bot);
@@ -51,6 +51,7 @@ public class MainScript extends Script {
     public void onStop() throws InterruptedException {
         super.onStop();
         clearSubclassInstances();
-        painter.deconstructPainter();
+        if(painter != null)
+            painter.deconstructPainter();
     }
 }

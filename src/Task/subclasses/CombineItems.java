@@ -18,7 +18,7 @@ import static Util.ScriptConstants.*;
 
 public class CombineItems extends LLCycleTask {
 
-    private static final String[] CREATE_VERBS = {"Make", "String", "Cut"};
+    private static final String[] CREATE_VERBS = {"Make", "String", "Cut", "Make sets:"};
 
     public CombineItems(Bot bot) {
         super(bot);
